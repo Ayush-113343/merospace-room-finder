@@ -89,7 +89,7 @@ merospace-room-finder/
 
 | Name | Role |
 |------|------|
-| Dipak Mahto |  |Project Manager
+| Dipak Mahto |  Project Manager |
 | Ayush Adhikar | Frontend Developer |
 | Sanjay Thakuri | Backend Developer |
 | Aaryan Kushwaha | Database & Testing |
