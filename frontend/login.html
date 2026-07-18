@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MeroSpace | Login</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <header>
+        <nav class="navbar">
+            <h2 class="logo">MeroSpace</h2>
+
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="rooms.html">Rooms</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="register.html">Register</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Login Section -->
+    <main>
+
+        <div class="login-container">
+
+            <h1>Welcome Back</h1>
+            <h2>Login to MeroSpace</h2>
+
+            <form id="loginForm">
+
+                <label for="email">Email Address</label>
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter your email"
+                    required>
+
+                <label for="password">Password</label>
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Enter your password"
+                    required>
+
+                <button type="submit">
+                    Login
+                </button>
+
+                <p id="message"></p>
+
+            </form>
+
+            <p class="form-footer">
+                Don't have an account?
+                <a href="register.html">Register Here</a>
+            </p>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 MeroSpace | Room Finder</p>
+    </footer>
+
+    <script src="js/script.js"></script>
+
+</body>
+
+</html>
