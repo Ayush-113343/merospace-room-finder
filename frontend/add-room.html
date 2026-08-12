@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>List a Room — MeroSpace</title>
+  <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@600;700&family=Karla:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+  <nav class="navbar">
+    <a href="/" class="nav-logo">Mero<span>Space</span></a>
+    <button class="nav-toggle" id="navToggle"><span></span><span></span><span></span></button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/">Home</a></li>
+      <li><a href="/rooms">Rooms</a></li>
+      <li><a href="/contact">Contact</a></li>
+      <li id="navAuth"></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="form-page">
+  <div class="form-card">
+    <h2>List Your Room</h2>
+    <p>Fill in the details below. Your listing will be reviewed by our team before going live.</p>
+
+    <form id="addRoomForm" enctype="multipart/form-data">
+      <div class="form-grid">
+
+        <div class="form-group span-2">
+          <label>Room Title *</label>
+          <input type="text" name="title" placeholder="e.g. Cozy single room near Thamel" required>
+        </div>
+
+        <div class="form-group">
+          <label>Room Type *</label>
+          <select name="roomType" required>
+            <option value="">Select type…</option>
+            <option value="Single Room">Single Room</option>
+            <option value="Apartment">Apartment</option>
+            <option value="Studio">Studio</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Monthly Rent (Rs.) *</label>
+          <input type="number" name="price" placeholder="e.g. 8000" min="500" required>
+        </div>
+
+        <div class="form-group">
+          <label>Location *</label>
+          <input type="text" name="location" placeholder="e.g. Thamel, Kathmandu" required>
+        </div>
+
+        <div class="form-group">
+          <label>Contact Number *</label>
+          <input type="text" name="contact" placeholder="e.g. 98XXXXXXXX" required>
+        </div>
+
+        <div class="form-group">
+          <label>Bedrooms</label>
+          <input type="number" name="bedrooms" value="1" min="1" max="10">
+        </div>
+
+        <div class="form-group">
+          <label>Bathrooms</label>
+          <input type="number" name="bathrooms" value="1" min="1" max="10">
+        </div>
+
+        <div class="form-group span-2">
+          <label>Description *</label>
+          <textarea name="description" rows="4" placeholder="Describe the room, neighbourhood, nearby landmarks…" required></textarea>
+        </div>
+
+        <div class="form-group span-2">
+          <label>Facilities</label>
+          <div class="checkbox-group">
+            <label class="checkbox-item"><input type="checkbox" name="facilities" value="WiFi"> WiFi</label>
+            <label class="checkbox-item"><input type="checkbox" name="facilities" value="Parking"> Parking</label>
+            <label class="checkbox-item"><input type="checkbox" name="facilities" value="Water 24/7"> Water 24/7</label>
+            <label class="checkbox-item"><input type="checkbox" name="facilities" value="Kitchen"> Kitchen</label>
+            <label class="checkbox-item"><input type="checkbox" name="facilities" value="Attached Bath"> Attached Bath</label>
+            <label class="checkbox-item"><input type="checkbox" name="facilities" value="Furnished"> Furnished</label>
+            <label class="checkbox-item"><input type="checkbox" name="facilities" value="Balcony"> Balcony</label>
+            <label class="checkbox-item"><input type="checkbox" name="facilities" value="AC"> AC</label>
+          </div>
+        </div>
+
+        <div class="form-group span-2">
+          <label>Room Photos (up to 5)</label>
+          <div class="image-upload-area" id="uploadArea">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <p>Click to upload photos or drag and drop here</p>
+            <input type="file" name="images" id="imageInput" accept="image/*" multiple style="display:none">
+          </div>
+          <div class="image-preview" id="imagePreview"></div>
+        </div>
+
+      </div>
+
+      <p class="form-message" id="message"></p>
+      <button type="submit" class="btn btn-primary btn-full" style="margin-top:20px;">Submit Listing →</button>
+    </form>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-brand"><h3>Mero<span>Space</span></h3><p>Room finder for the Kathmandu Valley.</p></div>
+    <div class="footer-col"><h4>Explore</h4><a href="/rooms">Browse Rooms</a><a href="/add-room">List a Room</a></div>
+    <div class="footer-col"><h4>Account</h4><a href="/login">Login</a><a href="/register">Register</a></div>
+    <div class="footer-col"><h4>Company</h4><a href="/contact">Contact Us</a></div>
+  </div>
+  <div class="footer-bottom"><span>© 2026 MeroSpace.</span></div>
+</footer>
+
+<div class="toast" id="toast"></div>
+<script src="js/script.js"></script>
+</body>
+</html>

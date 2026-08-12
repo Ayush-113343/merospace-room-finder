@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browse Rooms — MeroSpace</title>
+  <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@600;700&family=Karla:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+  <nav class="navbar">
+    <a href="/" class="nav-logo">Mero<span>Space</span></a>
+    <button class="nav-toggle" id="navToggle"><span></span><span></span><span></span></button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/">Home</a></li>
+      <li><a href="/rooms" class="active">Rooms</a></li>
+      <li><a href="/contact">Contact</a></li>
+      <li id="navAuth"></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="page-header">
+  <h1>Browse Rooms</h1>
+  <p>Find your next home in Kathmandu Valley</p>
+</div>
+
+<div class="filters-bar">
+  <input type="text" id="filterLoc" placeholder="Search location…">
+  <select id="filterType">
+    <option value="">All Types</option>
+    <option value="Single Room">Single Room</option>
+    <option value="Apartment">Apartment</option>
+    <option value="Studio">Studio</option>
+  </select>
+  <input type="number" id="filterBudget" placeholder="Max budget (Rs.)">
+  <button class="btn btn-primary" id="filterBtn">Search</button>
+  <span class="result-count" id="resultCount"></span>
+</div>
+
+<div class="rooms-page-body">
+  <div class="rooms-grid" id="roomGrid">
+    <div class="spinner-wrap"><div class="spinner"></div></div>
+  </div>
+  <div class="empty-state" id="emptyState" hidden>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+    <h3>No rooms found</h3>
+    <p>Try different filters or check back later.</p>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-brand"><h3>Mero<span>Space</span></h3><p>Room finder for the Kathmandu Valley.</p></div>
+    <div class="footer-col"><h4>Explore</h4><a href="/rooms">Browse Rooms</a><a href="/add-room">List a Room</a><a href="/favorites">Saved Rooms</a></div>
+    <div class="footer-col"><h4>Account</h4><a href="/login">Login</a><a href="/register">Register</a><a href="/my-rooms">My Rooms</a></div>
+    <div class="footer-col"><h4>Company</h4><a href="/contact">Contact Us</a><a href="/admin/login">Admin Panel</a></div>
+  </div>
+  <div class="footer-bottom"><span>© 2026 MeroSpace.</span></div>
+</footer>
+
+<div class="toast" id="toast"></div>
+<script src="js/script.js"></script>
+</body>
+</html>
