@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Settings — MeroSpace Admin</title>
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<div class="admin-layout">
+  <aside class="sidebar">
+    <div class="sidebar-brand"><h2>MeroSpace</h2><span>Administration Panel</span></div>
+    <div class="nav-section">
+      <div class="nav-section-title">Main</div>
+      <a href="/admin" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Dashboard</a>
+      <a href="/admin/pending" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Pending Approvals<span class="nav-badge" id="pendingCount">0</span></a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-title">Room Management</div>
+      <a href="/admin/rooms" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>All Listings</a>
+      <a href="/admin/pending" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Approve / Reject</a>
+      <a href="/admin/analytics" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Analytics</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-title">User Management</div>
+      <a href="/admin/users" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>All Users</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-title">Configuration</div>
+      <a href="/admin/settings" class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>Site Settings</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-title">Account</div>
+      <a href="/" class="nav-item" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>View Website</a>
+      <a href="#" class="nav-item logout-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Logout</a>
+    </div>
+    <div class="sidebar-footer"><div class="sidebar-admin"><div class="sidebar-avatar" id="sidebarAvatar">A</div><div><div class="sidebar-admin-name" id="sidebarName">Admin</div><div class="sidebar-admin-role">Administrator</div></div></div></div>
+  </aside>
+
+  <main class="main-content">
+    <div class="top-bar">
+      <div>
+        <div class="breadcrumb"><a href="/admin">Admin</a><span>›</span>Settings</div>
+        <h1>Site Settings</h1>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px;">
+
+      <!-- General -->
+      <div class="data-card">
+        <div class="data-card-header"><h3>General Info</h3></div>
+        <div class="form-group"><label>Site Name</label><input type="text" value="MeroSpace"></div>
+        <div class="form-group"><label>Tagline</label><input type="text" value="Find Rooms in the Kathmandu Valley"></div>
+        <div class="form-group"><label>Contact Email</label><input type="email" value="hello@merospace.com"></div>
+        <div class="form-group"><label>Contact Phone</label><input type="text" value="+977 98XXXXXXXX"></div>
+        <button class="form-submit" onclick="saved()">Save Changes</button>
+      </div>
+
+      <!-- Listing rules -->
+      <div class="data-card">
+        <div class="data-card-header"><h3>Listing Rules</h3></div>
+        <div class="form-group">
+          <label>Require Admin Approval?</label>
+          <select><option value="yes" selected>Yes — review before going live</option><option value="no">No — auto-approve</option></select>
+        </div>
+        <div class="form-group"><label>Max Images per Listing</label><input type="number" value="5" min="1" max="10"></div>
+        <div class="form-group"><label>Max File Size (MB)</label><input type="number" value="5" min="1" max="20"></div>
+        <div class="form-group"><label>Allowed Room Types</label><textarea>Single Room, Apartment, Studio</textarea></div>
+        <button class="form-submit" onclick="saved()">Save Changes</button>
+      </div>
+
+      <!-- Locations -->
+      <div class="data-card">
+        <div class="data-card-header"><h3>Supported Locations</h3></div>
+        <div class="form-group"><label>Cities / Areas (one per line)</label>
+          <textarea rows="6">Kathmandu
+Lalitpur
+Bhaktapur
+Thamel
+Patan
+Jorpati
+Baneshwor
+Koteshwor</textarea>
+        </div>
+        <button class="form-submit" onclick="saved()">Save Changes</button>
+      </div>
+
+      <!-- Appearance -->
+      <div class="data-card">
+        <div class="data-card-header"><h3>Appearance</h3></div>
+        <div class="form-group"><label>Primary Color</label><input type="color" value="#7C2F21" style="height:42px;padding:4px 8px;"></div>
+        <div class="form-group"><label>Accent Color</label><input type="color" value="#4B6358" style="height:42px;padding:4px 8px;"></div>
+        <div class="form-group"><label>Homepage Tagline</label><textarea rows="2">Find Your Perfect Room in Kathmandu Valley</textarea></div>
+        <button class="form-submit" onclick="saved()">Save Changes</button>
+      </div>
+
+    </div>
+
+    <!-- Server info -->
+    <div class="data-card" style="margin-top:22px;">
+      <div class="data-card-header"><h3>Server Information</h3></div>
+      <table class="data-table">
+        <tbody>
+          <tr><td style="font-weight:700;width:200px">Environment</td><td id="srvEnv">—</td></tr>
+          <tr><td style="font-weight:700">Server Port</td><td>5000</td></tr>
+          <tr><td style="font-weight:700">Database</td><td>MongoDB — localhost:27017/merospace</td></tr>
+          <tr><td style="font-weight:700">Uptime</td><td id="srvUptime">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+<script src="js/admin.js"></script>
+<script>
+  const u = JSON.parse(localStorage.getItem('adminUser')||'{}');
+  if (u.name) { document.getElementById('sidebarName').textContent=u.name; document.getElementById('sidebarAvatar').textContent=u.name[0].toUpperCase(); }
+
+  function saved() {
+    const btn = event.target;
+    btn.textContent = '✅ Saved!'; btn.style.background = 'var(--success)';
+    setTimeout(() => { btn.textContent = 'Save Changes'; btn.style.background = ''; }, 2000);
+  }
+
+  async function loadHealth() {
+    const h = await api('/health');
+    if (h) {
+      document.getElementById('srvEnv').textContent = h.data?.env || 'development';
+      const up = Math.round((h.data?.uptime||0));
+      const hrs = Math.floor(up/3600); const mins = Math.floor((up%3600)/60);
+      document.getElementById('srvUptime').textContent = `${hrs}h ${mins}m`;
+    }
+  }
+  document.addEventListener('DOMContentLoaded', loadHealth);
+</script>
+</body>
+</html>
