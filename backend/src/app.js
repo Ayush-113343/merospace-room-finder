@@ -77,6 +77,7 @@ app.get('/my-rooms',     (req, res) => res.sendFile(path.join(frontend, 'my-room
 app.get('/favorites',    (req, res) => res.sendFile(path.join(frontend, 'favorites.html')));
 app.get('/room-details', (req, res) => res.sendFile(path.join(frontend, 'room-details.html')));
 app.get('/contact',      (req, res) => res.sendFile(path.join(frontend, 'contact.html')));
+app.get('/about',        (req, res) => res.sendFile(path.join(frontend, 'about.html')));
 
 // Admin pages — use exact paths, must come after static middleware
 app.get('/admin',           (req, res) => res.sendFile(path.join(adminDir, 'index.html')));
@@ -85,6 +86,8 @@ app.get('/admin/dashboard', (req, res) => res.sendFile(path.join(adminDir, 'inde
 app.get('/admin/rooms',     (req, res) => res.sendFile(path.join(adminDir, 'rooms.html')));
 app.get('/admin/users',     (req, res) => res.sendFile(path.join(adminDir, 'users.html')));
 app.get('/admin/settings',  (req, res) => res.sendFile(path.join(adminDir, 'settings.html')));
+app.get('/admin/pending',   (req, res) => res.sendFile(path.join(adminDir, 'pending.html')));
+app.get('/admin/analytics', (req, res) => res.sendFile(path.join(adminDir, 'analytics.html')));
 
 // ─── 6) 404 FALLBACK ─────────────────────────────────────────────────────────
 app.all(/(.*)/, (req, res, next) => {

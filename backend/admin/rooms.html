@@ -2,55 +2,136 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Listings | MeroSpace Admin</title>
-  <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@600;700&family=Karla:wght@400;600;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Listings — MeroSpace Admin</title>
   <link rel="stylesheet" href="css/admin.css">
 </head>
 <body>
-  <div class="admin-layout">
-    <aside class="sidebar">
-      <div class="sidebar-brand">
-        <h2>MeroSpace</h2>
-        <span>Administration Panel</span>
-      </div>
-      <div class="nav-section">
-        <div class="nav-section-title">Main</div>
-        <a href="index.html" class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-          Dashboard
-        </a>
-        <a href="rooms.html" class="nav-item active">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg>
-          Listings
-        </a>
-        <a href="users.html" class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          Users
-        </a>
-      </div>
-      <div class="nav-section">
-        <div class="nav-section-title">Account</div>
-        <a href="#" class="nav-item logout-btn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-          Logout
-        </a>
-      </div>
-    </aside>
+<div class="admin-layout">
+  <aside class="sidebar">
+    <div class="sidebar-brand"><h2>MeroSpace</h2><span>Administration Panel</span></div>
+    <div class="nav-section">
+      <div class="nav-section-title">Main</div>
+      <a href="/admin" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Dashboard</a>
+      <a href="/admin/pending" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Pending Approvals<span class="nav-badge" id="pendingCount">0</span></a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-title">Room Management</div>
+      <a href="/admin/rooms" class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg>All Listings</a>
+      <a href="/admin/pending" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Approve / Reject</a>
+      <a href="/admin/analytics" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Analytics</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-title">User Management</div>
+      <a href="/admin/users" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>All Users</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-title">Configuration</div>
+      <a href="/admin/settings" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>Site Settings</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-title">Account</div>
+      <a href="/" class="nav-item" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>View Website</a>
+      <a href="#" class="nav-item logout-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Logout</a>
+    </div>
+    <div class="sidebar-footer"><div class="sidebar-admin"><div class="sidebar-avatar" id="sidebarAvatar">A</div><div><div class="sidebar-admin-name" id="sidebarName">Admin</div><div class="sidebar-admin-role">Administrator</div></div></div></div>
+  </aside>
 
-    <main class="main-content">
-      <div class="top-bar"><h1>Room Listings</h1></div>
-      <div class="data-card">
-        <div class="data-card-header"><h3>All Listings</h3></div>
-        <table class="data-table" id="roomsTable">
-          <thead>
-            <tr><th>Room</th><th>Type</th><th>Price</th><th>Owner</th><th>Status</th><th>Views / Fav</th><th>Actions</th></tr>
-          </thead>
-          <tbody></tbody>
-        </table>
+  <main class="main-content">
+    <div class="top-bar">
+      <div>
+        <div class="breadcrumb"><a href="/admin">Admin</a><span>›</span>All Listings</div>
+        <h1>Room Listings</h1>
       </div>
-    </main>
-  </div>
-  <script src="js/admin.js"></script>
+    </div>
+
+    <div class="data-card">
+      <div class="data-card-header">
+        <h3>All Listings</h3>
+        <div class="data-card-filters">
+          <select id="filterStatus">
+            <option value="">All Status</option>
+            <option value="pending">Pending</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
+          </select>
+          <select id="filterType">
+            <option value="">All Types</option>
+            <option value="Single Room">Single Room</option>
+            <option value="Apartment">Apartment</option>
+            <option value="Studio">Studio</option>
+          </select>
+          <input type="text" id="filterSearch" placeholder="Search title or location…">
+        </div>
+      </div>
+      <table class="data-table" id="roomsTable">
+        <thead>
+          <tr>
+            <th>Room</th><th>Type</th><th>Price</th><th>Location</th>
+            <th>Owner</th><th>Status</th><th>Views</th><th>Featured</th><th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="roomsBody">
+          <tr><td colspan="9" style="text-align:center;padding:32px"><div class="spinner-wrap"><div class="spinner"></div></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+<script src="js/admin.js"></script>
+<script>
+  const u = JSON.parse(localStorage.getItem('adminUser')||'{}');
+  if (u.name) { document.getElementById('sidebarName').textContent=u.name; document.getElementById('sidebarAvatar').textContent=u.name[0].toUpperCase(); }
+
+  let allRooms = [];
+
+  async function loadRooms() {
+    allRooms = await api('/admin/rooms') || [];
+    renderRooms();
+  }
+
+  function renderRooms() {
+    const status = document.getElementById('filterStatus').value;
+    const type   = document.getElementById('filterType').value;
+    const search = document.getElementById('filterSearch').value.toLowerCase();
+    const tbody  = document.getElementById('roomsBody');
+
+    let rooms = allRooms;
+    if (status) rooms = rooms.filter(r => r.status === status);
+    if (type)   rooms = rooms.filter(r => r.roomType === type);
+    if (search) rooms = rooms.filter(r => r.title.toLowerCase().includes(search) || r.location.toLowerCase().includes(search));
+
+    if (!rooms.length) { tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:36px;color:var(--ink-soft)">No rooms match the filters.</td></tr>'; return; }
+
+    tbody.innerHTML = rooms.map(r => `
+      <tr>
+        <td><strong>${r.title}</strong></td>
+        <td>${r.roomType}</td>
+        <td>Rs. ${r.price.toLocaleString()}</td>
+        <td>${r.location}</td>
+        <td>${r.owner?.name||'—'}</td>
+        <td><span class="badge badge-${r.status==='approved'?'success':r.status==='pending'?'warning':'danger'}">${r.status}</span></td>
+        <td>${r.views||0}</td>
+        <td><span class="badge ${r.isFeatured?'badge-warning':'badge-info'}">${r.isFeatured?'Yes':'No'}</span></td>
+        <td class="actions">
+          ${r.status==='pending' ? `<button class="btn-sm btn-success" onclick="setStatus('${r._id}','approved')">Approve</button>` : ''}
+          ${r.status!=='rejected' ? `<button class="btn-sm btn-danger" onclick="setStatus('${r._id}','rejected')">Reject</button>` : ''}
+          <button class="btn-sm btn-accent" onclick="toggleFeature('${r._id}')">${r.isFeatured?'Unfeature':'Feature'}</button>
+          <a href="/room-details?id=${r._id}" target="_blank" class="btn-sm btn-ghost">View</a>
+          <button class="btn-sm btn-danger" onclick="delRoom('${r._id}')">Delete</button>
+        </td>
+      </tr>`).join('');
+  }
+
+  window.setStatus   = async (id, status) => { await api(`/admin/rooms/${id}/status`,{method:'PUT',body:JSON.stringify({status})}); loadRooms(); };
+  window.toggleFeature= async id => { await api(`/admin/rooms/${id}/feature`,{method:'PUT'}); loadRooms(); };
+  window.delRoom     = async id => { if(!confirm('Delete this room?'))return; await api(`/admin/rooms/${id}`,{method:'DELETE'}); loadRooms(); };
+
+  document.getElementById('filterStatus').addEventListener('change', renderRooms);
+  document.getElementById('filterType').addEventListener('change', renderRooms);
+  document.getElementById('filterSearch').addEventListener('input', renderRooms);
+
+  document.addEventListener('DOMContentLoaded', loadRooms);
+</script>
 </body>
 </html>

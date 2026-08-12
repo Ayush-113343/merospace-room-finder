@@ -5,20 +5,25 @@ const setToken = (t) => localStorage.setItem('adminToken', t);
 const removeToken = () => localStorage.removeItem('adminToken');
 
 async function api(endpoint, options = {}) {
-  const res = await fetch(`${API_URL}${endpoint}`, {
-    ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${getToken()}`,
-      ...options.headers
+  try {
+    const res = await fetch(`${API_URL}${endpoint}`, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${getToken()}`,
+        ...options.headers
+      }
+    });
+    if (res.status === 401 || res.status === 403) {
+      removeToken();
+      window.location.href = '/admin/login';
+      return null;
     }
-  });
-  if (res.status === 401 || res.status === 403) {
-    removeToken();
-    window.location.href = 'login.html';
-    return;
+    return res.json();
+  } catch (err) {
+    console.error('API error:', endpoint, err.message);
+    return null;
   }
-  return res.json();
 }
 
 // Login
@@ -66,17 +71,21 @@ document.querySelectorAll('.logout-btn').forEach(btn => {
 async function loadStats() {
   if (!document.getElementById('statsGrid')) return;
   const stats = await api('/admin/stats');
-  document.getElementById('statUsers').textContent = stats.totalUsers;
-  document.getElementById('statRooms').textContent = stats.totalRooms;
-  document.getElementById('statPending').textContent = stats.pendingRooms;
-  document.getElementById('statViews').textContent = stats.totalViews?.toLocaleString();
+  if (!stats) return;
+  document.getElementById('statUsers').textContent = stats.totalUsers ?? '—';
+  document.getElementById('statRooms').textContent = stats.totalRooms ?? '—';
+  document.getElementById('statPending').textContent = stats.pendingRooms ?? '—';
+  document.getElementById('statViews').textContent = stats.totalViews?.toLocaleString() ?? '—';
 }
 
 // Users
 async function loadUsers() {
   if (!document.getElementById('usersTable')) return;
   const users = await api('/admin/users');
+  if (!users) return;
   const tbody = document.querySelector('#usersTable tbody');
+  if (!tbody) return;
+  if (!users.length) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:32px;color:#999">No users found.</td></tr>'; return; }
   tbody.innerHTML = users.map(u => `
     <tr>
       <td>${u.name}</td>
@@ -96,7 +105,10 @@ async function loadUsers() {
 async function loadRooms() {
   if (!document.getElementById('roomsTable')) return;
   const rooms = await api('/admin/rooms');
+  if (!rooms) return;
   const tbody = document.querySelector('#roomsTable tbody');
+  if (!tbody) return;
+  if (!rooms.length) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:32px;color:#999">No rooms found.</td></tr>'; return; }
   tbody.innerHTML = rooms.map(r => `
     <tr>
       <td><strong>${r.title}</strong><br><small>${r.location}</small></td>
