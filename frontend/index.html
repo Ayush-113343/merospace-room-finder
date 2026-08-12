@@ -1,99 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MeroSpace - Room Finder</title>
-
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MeroSpace — Find Rooms in the Kathmandu Valley</title>
+  <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@600;700&family=Karla:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <!-- Navigation -->
-    <header>
-        <nav class="navbar">
-            <h2 class="logo">MeroSpace</h2>
+<!-- NAVBAR -->
+<header>
+  <nav class="navbar">
+    <a href="/" class="nav-logo">Mero<span>Space</span></a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/" class="active">Home</a></li>
+      <li><a href="/rooms">Rooms</a></li>
+      <li><a href="/contact">Contact</a></li>
+      <li id="navAuth"></li>
+    </ul>
+  </nav>
+</header>
 
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="rooms.html">Rooms</a></li>
-                <li><a href="login.html">Login</a></li>
-                <li><a href="register.html">Register</a></li>
-            </ul>
-        </nav>
-    </header>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>Find Your Perfect Room in <span>Kathmandu Valley</span></h1>
+    <p>Browse hundreds of verified rooms in Kathmandu, Lalitpur, and Bhaktapur — no broker, no hassle.</p>
+    <div class="hero-search">
+      <input type="text" id="heroLoc" placeholder="Location (e.g. Thamel, Patan…)">
+      <select id="heroType">
+        <option value="">All Types</option>
+        <option value="Single Room">Single Room</option>
+        <option value="Apartment">Apartment</option>
+        <option value="Studio">Studio</option>
+      </select>
+      <input type="number" id="heroBudget" placeholder="Max budget (Rs.)">
+      <button class="btn btn-primary" id="heroSearch">Search Rooms</button>
+    </div>
+  </div>
+</section>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <h1>Find Your Perfect Rental Room</h1>
+<!-- STATS BAR -->
+<div class="stats-bar" id="statsBar">
+  <div class="stat-item"><strong id="statRooms">—</strong><span>Active Listings</span></div>
+  <div class="stat-item"><strong id="statLocations">3</strong><span>Cities Covered</span></div>
+  <div class="stat-item"><strong id="statUsers">—</strong><span>Registered Users</span></div>
+  <div class="stat-item"><strong>0%</strong><span>Broker Fees</span></div>
+</div>
 
-        <p>
-            Search affordable rooms near your preferred location.
-        </p>
+<!-- FEATURED ROOMS -->
+<section class="featured-section">
+  <div class="container">
+    <div class="section-title">
+      <h2>Featured Listings</h2>
+      <p>Hand-picked rooms across the valley</p>
+      <div class="section-divider"></div>
+    </div>
+    <div class="rooms-grid" id="featuredGrid">
+      <div class="spinner-wrap"><div class="spinner"></div></div>
+    </div>
+    <div class="view-all-wrap">
+      <a href="/rooms" class="btn btn-outline">View All Rooms →</a>
+    </div>
+  </div>
+</section>
 
-        <a href="rooms.html" class="btn">
-            Browse Rooms
-        </a>
-    </section>
+<!-- CTA BANNER -->
+<section class="cta-banner">
+  <h2>Renting out a room?</h2>
+  <p>List it in a few minutes — no fees, no middlemen, thousands of potential tenants.</p>
+  <a href="/add-room" class="btn btn-ghost">List Your Room →</a>
+</section>
 
-    <!-- Featured Rooms -->
-    <section class="featured">
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <h3>Mero<span>Space</span></h3>
+      <p>A room finder for the Kathmandu valley — built to make renting as simple as reading a sign on a gate.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Explore</h4>
+      <a href="/rooms">Browse Rooms</a>
+      <a href="/add-room">List a Room</a>
+      <a href="/favorites">Saved Rooms</a>
+    </div>
+    <div class="footer-col">
+      <h4>Account</h4>
+      <a href="/login">Login</a>
+      <a href="/register">Register</a>
+      <a href="/my-rooms">My Rooms</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="/contact">Contact Us</a>
+      <a href="/admin/login">Admin Panel</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 MeroSpace. All rights reserved.</span>
+    <span><a href="/contact">Privacy Policy</a> · <a href="/contact">Terms</a></span>
+  </div>
+</footer>
 
-        <h2>Featured Rooms</h2>
-
-        <div class="room-container">
-
-            <div class="room-card">
-                <img src="https://via.placeholder.com/300x180" alt="Room">
-
-                <h3>Single Room</h3>
-
-                <p>Kathmandu</p>
-
-                <p>Rs. 8000 / Month</p>
-
-                <a href="room-details.html">View Details</a>
-            </div>
-
-            <div class="room-card">
-                <img src="https://via.placeholder.com/300x180" alt="Room">
-
-                <h3>Apartment</h3>
-
-                <p>Lalitpur</p>
-
-                <p>Rs. 12000 / Month</p>
-
-                <a href="room-details.html">View Details</a>
-            </div>
-
-            <div class="room-card">
-                <img src="https://via.placeholder.com/300x180" alt="Room">
-
-                <h3>Studio Room</h3>
-
-                <p>Bhaktapur</p>
-
-                <p>Rs. 9500 / Month</p>
-
-                <a href="room-details.html">View Details</a>
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- Footer -->
-
-    <footer>
-
-        <p>
-            © 2026 MeroSpace | Room Finder
-        </p>
-
-    </footer>
-
-    <script src="js/script.js"></script>
-
+<div class="toast" id="toast"></div>
+<script src="js/script.js"></script>
 </body>
 </html>

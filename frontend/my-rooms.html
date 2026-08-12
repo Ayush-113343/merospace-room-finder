@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Rooms — MeroSpace</title>
+  <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@600;700&family=Karla:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+  <nav class="navbar">
+    <a href="/" class="nav-logo">Mero<span>Space</span></a>
+    <button class="nav-toggle" id="navToggle"><span></span><span></span><span></span></button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/">Home</a></li>
+      <li><a href="/rooms">Rooms</a></li>
+      <li><a href="/contact">Contact</a></li>
+      <li id="navAuth"></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="dashboard-page">
+  <div class="dashboard-header">
+    <h1>My Listings</h1>
+    <a href="/add-room" class="btn btn-primary">+ Add New Room</a>
+  </div>
+
+  <div class="room-table-wrap">
+    <table class="room-table">
+      <thead>
+        <tr>
+          <th>Room</th>
+          <th>Type</th>
+          <th>Price</th>
+          <th>Status</th>
+          <th>Views</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="myRoomsBody">
+        <tr><td colspan="6" style="text-align:center;padding:48px;color:var(--ink-soft)">Loading…</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="empty-state" id="emptyState" hidden>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+    <h3>No listings yet</h3>
+    <p>Start by listing your first room.</p>
+    <a href="/add-room" class="btn btn-primary" style="margin-top:16px;">List a Room</a>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-brand"><h3>Mero<span>Space</span></h3><p>Room finder for the Kathmandu Valley.</p></div>
+    <div class="footer-col"><h4>Explore</h4><a href="/rooms">Browse Rooms</a><a href="/add-room">List a Room</a></div>
+    <div class="footer-col"><h4>Account</h4><a href="/login">Login</a><a href="/register">Register</a></div>
+    <div class="footer-col"><h4>Company</h4><a href="/contact">Contact Us</a></div>
+  </div>
+  <div class="footer-bottom"><span>© 2026 MeroSpace.</span></div>
+</footer>
+
+<div class="toast" id="toast"></div>
+<script src="js/script.js"></script>
+</body>
+</html>
