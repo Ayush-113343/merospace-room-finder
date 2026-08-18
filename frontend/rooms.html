@@ -4,64 +4,472 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Browse Rooms — MeroSpace</title>
-  <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@600;700&family=Karla:wght@400;600;700&display=swap" rel="stylesheet">
+  <meta name="description" content="Browse verified rooms, flats, and apartments in Kathmandu Valley. Filter by location, type, and budget.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ── Rooms page specific ── */
+    .explore-wrapper {
+      padding: var(--sp-8) 5% var(--sp-20);
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* mobile filter toggle */
+    .filter-mobile-toggle {
+      display: none;
+      width: 100%;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 11px 16px;
+      background: #fff;
+      border: 1.5px solid var(--bg-3);
+      border-radius: var(--r-md);
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--ink-2);
+      margin-bottom: var(--sp-4);
+      cursor: pointer;
+    }
+    .filter-mobile-toggle svg { width: 16px; height: 16px; }
+
+    /* amenity pills */
+    .amenity-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+    .amenity-pill {
+      padding: 5px 11px;
+      border: 1.5px solid var(--bg-3);
+      border-radius: var(--r-full);
+      font-size: 0.78rem; font-weight: 600;
+      color: var(--ink-3); cursor: pointer;
+      background: var(--bg);
+      transition: all var(--t-fast);
+      user-select: none;
+    }
+    .amenity-pill:hover { border-color: var(--primary); color: var(--primary); }
+    .amenity-pill.selected { border-color: var(--primary); background: var(--primary-lt); color: var(--primary); }
+
+    /* active filters row */
+    .active-filters {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin-bottom: var(--sp-4);
+    }
+    .active-filter-chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 10px; border-radius: var(--r-full);
+      background: var(--primary-lt); color: var(--primary);
+      font-size: 0.75rem; font-weight: 700;
+      border: 1px solid var(--primary-mid);
+    }
+    .active-filter-chip button {
+      background: none; border: none; color: var(--primary);
+      cursor: pointer; font-size: 1rem; line-height: 1; padding: 0;
+      display: flex; align-items: center;
+    }
+
+    /* results toolbar */
+    .results-toolbar {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: var(--sp-5); flex-wrap: wrap; gap: var(--sp-3);
+    }
+    .results-count {
+      font-size: 0.9rem; color: var(--ink-3);
+    }
+    .results-count strong { color: var(--ink); font-weight: 700; }
+
+    @media (max-width: 960px) {
+      .filter-sidebar {
+        display: none;
+      }
+      .filter-sidebar.open {
+        display: block;
+        position: fixed; inset: 0; z-index: 800;
+        overflow-y: auto; padding: var(--sp-6);
+        background: #fff;
+        border-radius: 0;
+      }
+      .filter-mobile-toggle { display: flex; }
+      .sidebar-close {
+        display: flex !important;
+        align-items: center; justify-content: space-between;
+        margin-bottom: var(--sp-5);
+      }
+    }
+    .sidebar-close { display: none; }
+    .sidebar-close h3 { font-size: 1.1rem; font-weight: 700; }
+    .sidebar-close button { background: none; border: none; cursor: pointer; font-size: 1.5rem; color: var(--ink-3); }
+  </style>
 </head>
 <body>
 
 <header>
   <nav class="navbar">
     <a href="/" class="nav-logo">Mero<span>Space</span></a>
-    <button class="nav-toggle" id="navToggle"><span></span><span></span><span></span></button>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
     <ul class="nav-links" id="navLinks">
       <li><a href="/">Home</a></li>
-      <li><a href="/rooms" class="active">Rooms</a></li>
+      <li><a href="/rooms" class="active">Explore</a></li>
+      <li><a href="/add-room">List Your Space</a></li>
+      <li><a href="/about">About</a></li>
       <li id="navAuth"></li>
     </ul>
   </nav>
 </header>
 
+<!-- page hero -->
 <div class="page-header">
-  <h1>Browse Rooms</h1>
-  <p>Find your next home in Kathmandu Valley</p>
+  <div style="max-width:1400px;margin:0 auto;padding:0 5%">
+    <h1>Find your next home</h1>
+    <p>Verified rooms and flats across Kathmandu Valley — zero broker fees</p>
+  </div>
 </div>
 
-<div class="filters-bar">
-  <input type="text" id="filterLoc" placeholder="Search location…">
-  <select id="filterType">
+<!-- quick search bar (mobile-friendly) -->
+<div class="filters-bar" id="quickBar">
+  <input type="text" id="filterLoc" placeholder="🔍  Search location…" aria-label="Search by location">
+  <select id="filterType" aria-label="Property type">
     <option value="">All Types</option>
     <option value="Single Room">Single Room</option>
     <option value="Apartment">Apartment</option>
     <option value="Studio">Studio</option>
+    <option value="Hostel">Hostel</option>
+    <option value="Flat">Flat</option>
   </select>
-  <input type="number" id="filterBudget" placeholder="Max budget (Rs.)">
+  <div class="price-slider-container" title="Max budget">
+    <input type="range" id="priceRange" min="1000" max="80000" step="500" value="80000" aria-label="Max budget">
+    <span class="price-display" id="priceDisplay">Any price</span>
+  </div>
   <button class="btn btn-primary" id="filterBtn">Search</button>
-  <span class="result-count" id="resultCount"></span>
+  <span class="result-count" id="resultCount" aria-live="polite"></span>
 </div>
 
-<div class="rooms-page-body">
-  <div class="rooms-grid" id="roomGrid">
-    <div class="spinner-wrap"><div class="spinner"></div></div>
-  </div>
-  <div class="empty-state" id="emptyState" hidden>
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
-    <h3>No rooms found</h3>
-    <p>Try different filters or check back later.</p>
+<div class="explore-wrapper">
+  <div class="explore-layout">
+
+    <!-- ── Filter sidebar ── -->
+    <aside class="filter-sidebar" id="filterSidebar" aria-label="Filters">
+      <div class="sidebar-close">
+        <h3>Filters</h3>
+        <button id="sidebarClose" aria-label="Close filters">✕</button>
+      </div>
+
+      <h2>
+        Filters
+        <button id="clearFilters">Clear all</button>
+      </h2>
+
+      <div class="filter-group">
+        <div class="filter-group-label">Location</div>
+        <input type="text" id="sidebarLoc" placeholder="e.g. Baneshwor, Patan…" aria-label="Filter by location">
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-group-label">Property Type</div>
+        <select id="sidebarType" aria-label="Property type">
+          <option value="">Any type</option>
+          <option value="Single Room">Single Room</option>
+          <option value="Apartment">Apartment</option>
+          <option value="Studio">Studio</option>
+          <option value="Hostel">Hostel</option>
+          <option value="Flat">Flat</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-group-label">Max Budget (Rs.)</div>
+        <div class="price-range-group">
+          <input type="range" id="sidebarPrice" min="1000" max="80000" step="500" value="80000" aria-label="Max budget">
+          <div class="price-range-labels">
+            <span>Rs. 1,000</span>
+            <span>Rs. 80,000</span>
+          </div>
+          <div class="price-range-value" id="sidebarPriceValue">Any price</div>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-group-label">Amenities</div>
+        <div class="amenity-pills" id="amenityPills">
+          <span class="amenity-pill" data-val="Wi-Fi">Wi-Fi</span>
+          <span class="amenity-pill" data-val="Water">Water</span>
+          <span class="amenity-pill" data-val="Parking">Parking</span>
+          <span class="amenity-pill" data-val="Kitchen">Kitchen</span>
+          <span class="amenity-pill" data-val="Laundry">Laundry</span>
+          <span class="amenity-pill" data-val="Security">Security</span>
+          <span class="amenity-pill" data-val="Electricity">Electricity</span>
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-full" id="sidebarSearch" style="margin-top:var(--sp-3)">
+        Apply Filters
+      </button>
+    </aside>
+
+    <!-- ── Results ── -->
+    <main>
+      <!-- mobile filter toggle -->
+      <button class="filter-mobile-toggle" id="filterToggle" aria-expanded="false" aria-controls="filterSidebar">
+        <span style="display:flex;align-items:center;gap:8px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="10" y1="18" x2="14" y2="18"/></svg>
+          Filters
+        </span>
+        <span id="filterBadge" style="display:none;background:var(--primary);color:#fff;border-radius:50%;width:20px;height:20px;font-size:.72rem;font-weight:700;display:inline-flex;align-items:center;justify-content:center;"></span>
+      </button>
+
+      <!-- active filter chips -->
+      <div class="active-filters" id="activeFilters"></div>
+
+      <!-- toolbar -->
+      <div class="results-toolbar">
+        <p class="results-count" id="resultsCountText">Loading…</p>
+        <div style="display:flex;align-items:center;gap:8px">
+          <label for="sortSelect" style="font-size:.8rem;color:var(--ink-3);font-weight:600">Sort:</label>
+          <select class="sort-select" id="sortSelect" aria-label="Sort results">
+            <option value="newest">Newest first</option>
+            <option value="price-asc">Price: Low → High</option>
+            <option value="price-desc">Price: High → Low</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="rooms-grid" id="roomGrid" aria-live="polite">
+        <div class="skeleton-card"><div class="skeleton skeleton-img"></div><div class="skeleton-body"><div class="skeleton skeleton-line medium"></div><div class="skeleton skeleton-line short" style="margin-top:10px"></div></div></div>
+        <div class="skeleton-card"><div class="skeleton skeleton-img"></div><div class="skeleton-body"><div class="skeleton skeleton-line medium"></div><div class="skeleton skeleton-line short" style="margin-top:10px"></div></div></div>
+        <div class="skeleton-card"><div class="skeleton skeleton-img"></div><div class="skeleton-body"><div class="skeleton skeleton-line medium"></div><div class="skeleton skeleton-line short" style="margin-top:10px"></div></div></div>
+      </div>
+
+      <div class="empty-state" id="emptyState" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg>
+        <h3>No rooms found</h3>
+        <p>Try adjusting your filters or searching a different location.</p>
+        <button class="btn btn-outline" style="margin-top:var(--sp-4)" onclick="clearAllFilters()">Clear all filters</button>
+      </div>
+    </main>
+
   </div>
 </div>
 
+<!-- footer -->
 <footer class="site-footer">
   <div class="footer-grid">
-    <div class="footer-brand"><h3>Mero<span>Space</span></h3><p>Room finder for the Kathmandu Valley.</p></div>
-    <div class="footer-col"><h4>Explore</h4><a href="/rooms">Browse Rooms</a><a href="/add-room">List a Room</a><a href="/favorites">Saved Rooms</a></div>
-    <div class="footer-col"><h4>Account</h4><a href="/login">Login</a><a href="/register">Register</a><a href="/my-rooms">My Rooms</a></div>
-    <div class="footer-col"><h4>Company</h4><a href="/about">About Us</a>
-      <a href="/contact">Contact Us</a><a href="/admin/login">Admin Panel</a></div>
+    <div class="footer-brand">
+      <a href="/" class="nav-logo">Mero<span>Space</span></a>
+      <p>A room finder built for Kathmandu Valley.</p>
+    </div>
+    <div class="footer-col"><h4>Explore</h4><a href="/rooms">Browse Rooms</a><a href="/add-room">List a Space</a><a href="/favorites">Saved</a></div>
+    <div class="footer-col"><h4>Account</h4><a href="/login">Log In</a><a href="/register">Sign Up</a><a href="/my-rooms">My Listings</a></div>
+    <div class="footer-col"><h4>Company</h4><a href="/about">About</a><a href="/contact">Contact</a></div>
   </div>
-  <div class="footer-bottom"><span>© 2026 MeroSpace.</span></div>
+  <div class="footer-bottom">
+    <span>© 2026 MeroSpace.</span>
+    <span><a href="/contact">Privacy</a> · <a href="/contact">Terms</a></span>
+  </div>
 </footer>
 
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="js/script.js"></script>
+<script>
+(function () {
+  const API = 'http://localhost:5000/api';
+  let allRooms = [];
+  let selectedAmenities = [];
+
+  const grid    = document.getElementById('roomGrid');
+  const empty   = document.getElementById('emptyState');
+  const count   = document.getElementById('resultsCountText');
+
+  // price display
+  function fmtPrice(v) { return parseInt(v) >= 80000 ? 'Any price' : 'Rs. ' + parseInt(v).toLocaleString(); }
+  document.getElementById('priceRange')?.addEventListener('input', function() {
+    document.getElementById('priceDisplay').textContent = fmtPrice(this.value);
+  });
+  document.getElementById('sidebarPrice')?.addEventListener('input', function() {
+    document.getElementById('sidebarPriceValue').textContent = fmtPrice(this.value);
+  });
+
+  // amenity pills toggle
+  document.querySelectorAll('.amenity-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      pill.classList.toggle('selected');
+      const val = pill.dataset.val;
+      if (pill.classList.contains('selected')) {
+        if (!selectedAmenities.includes(val)) selectedAmenities.push(val);
+      } else {
+        selectedAmenities = selectedAmenities.filter(a => a !== val);
+      }
+    });
+  });
+
+  // mobile sidebar toggle
+  const sidebar = document.getElementById('filterSidebar');
+  document.getElementById('filterToggle')?.addEventListener('click', () => {
+    sidebar.classList.toggle('open');
+    document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
+  });
+  document.getElementById('sidebarClose')?.addEventListener('click', () => {
+    sidebar.classList.remove('open');
+    document.body.style.overflow = '';
+  });
+
+  // roomCard HTML helper (uses global from script.js if available, else local)
+  function buildCard(r) {
+    if (typeof roomCard === 'function') return roomCard(r);
+    const img = r.images?.length
+      ? `<img src="${API.replace('/api','')}${r.images[0]}" alt="${r.title}" loading="lazy">`
+      : `<div class="no-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" width="48" height="48"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></div>`;
+    const tag = r.isFeatured ? 'featured' : (Date.now() - new Date(r.createdAt) < 7*86400000 ? 'new' : '');
+    const tagLabel = r.isFeatured ? 'Featured' : (tag === 'new' ? 'New' : r.roomType);
+    const facs = (r.facilities||[]).slice(0,3).map(f=>`<span class="facility-tag">${f}</span>`).join('');
+    return `<div class="room-card">
+      <div class="room-card-image">${img}<span class="room-tag ${tag}">${tagLabel}</span></div>
+      <div class="room-card-body">
+        <div class="room-card-type">${r.roomType}</div>
+        <h3>${r.title}</h3>
+        <p class="room-location"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s7-6.2 7-12A7 7 0 1 0 5 10c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>${r.location}</p>
+        <div class="room-facilities">${facs}</div>
+      </div>
+      <div class="room-card-footer">
+        <span class="room-price">Rs. ${r.price.toLocaleString()}<small> /mo</small></span>
+        <a href="/room-details?id=${r._id}" class="room-link">View →</a>
+      </div>
+    </div>`;
+  }
+
+  function getFilters() {
+    const loc    = (document.getElementById('sidebarLoc')?.value || document.getElementById('filterLoc')?.value || '').trim();
+    const type   = document.getElementById('sidebarType')?.value || document.getElementById('filterType')?.value || '';
+    const budget = document.getElementById('sidebarPrice')?.value || document.getElementById('priceRange')?.value || '80000';
+    return { loc, type, budget: parseInt(budget) };
+  }
+
+  function renderActiveChips(filters) {
+    const container = document.getElementById('activeFilters');
+    if (!container) return;
+    const chips = [];
+    if (filters.loc)                         chips.push({ label: '📍 ' + filters.loc, key: 'loc' });
+    if (filters.type)                        chips.push({ label: filters.type, key: 'type' });
+    if (filters.budget < 80000)              chips.push({ label: 'Under Rs. ' + filters.budget.toLocaleString(), key: 'budget' });
+    selectedAmenities.forEach(a =>           chips.push({ label: a, key: 'amenity:' + a }));
+    container.innerHTML = chips.map(c =>
+      `<span class="active-filter-chip">${c.label}<button onclick="removeChip('${c.key}')" aria-label="Remove filter">×</button></span>`
+    ).join('');
+  }
+
+  window.removeChip = function(key) {
+    if (key === 'loc')    { document.getElementById('sidebarLoc').value = ''; document.getElementById('filterLoc').value = ''; }
+    if (key === 'type')   { document.getElementById('sidebarType').value = ''; document.getElementById('filterType').value = ''; }
+    if (key === 'budget') { document.getElementById('sidebarPrice').value = 80000; document.getElementById('priceRange').value = 80000; document.getElementById('sidebarPriceValue').textContent = 'Any price'; document.getElementById('priceDisplay').textContent = 'Any price'; }
+    if (key.startsWith('amenity:')) {
+      const val = key.split(':')[1];
+      selectedAmenities = selectedAmenities.filter(a => a !== val);
+      document.querySelectorAll('.amenity-pill').forEach(p => { if (p.dataset.val === val) p.classList.remove('selected'); });
+    }
+    loadRooms();
+  };
+
+  window.clearAllFilters = function() {
+    document.getElementById('sidebarLoc').value = '';
+    document.getElementById('filterLoc').value = '';
+    document.getElementById('sidebarType').value = '';
+    document.getElementById('filterType').value = '';
+    document.getElementById('sidebarPrice').value = 80000;
+    document.getElementById('priceRange').value = 80000;
+    document.getElementById('sidebarPriceValue').textContent = 'Any price';
+    document.getElementById('priceDisplay').textContent = 'Any price';
+    selectedAmenities = [];
+    document.querySelectorAll('.amenity-pill').forEach(p => p.classList.remove('selected'));
+    loadRooms();
+  };
+  document.getElementById('clearFilters')?.addEventListener('click', clearAllFilters);
+
+  async function loadRooms() {
+    grid.innerHTML = `<div class="skeleton-card"><div class="skeleton skeleton-img"></div><div class="skeleton-body"><div class="skeleton skeleton-line medium"></div></div></div>`.repeat(3);
+    empty.hidden = true;
+
+    const { loc, type, budget } = getFilters();
+    renderActiveChips({ loc, type, budget });
+
+    const q = new URLSearchParams();
+    if (loc)          q.set('location', loc);
+    if (type)         q.set('type', type);
+    if (budget < 80000) q.set('maxBudget', budget);
+
+    try {
+      const res  = await fetch(`${API}/rooms?${q}`);
+      const data = await res.json();
+      let rooms  = Array.isArray(data) ? data : (data.rooms || []);
+
+      // client-side amenity filter
+      if (selectedAmenities.length) {
+        rooms = rooms.filter(r => selectedAmenities.every(a => (r.facilities||[]).includes(a)));
+      }
+
+      // sort
+      const sort = document.getElementById('sortSelect')?.value || 'newest';
+      if (sort === 'price-asc')  rooms.sort((a,b) => a.price - b.price);
+      if (sort === 'price-desc') rooms.sort((a,b) => b.price - a.price);
+
+      allRooms = rooms;
+      if (count) count.innerHTML = rooms.length
+        ? `<strong>${rooms.length}</strong> room${rooms.length !== 1 ? 's' : ''} found`
+        : 'No results';
+
+      if (!rooms.length) {
+        grid.innerHTML = '';
+        empty.hidden = false;
+        return;
+      }
+      empty.hidden = true;
+      grid.innerHTML = rooms.map(buildCard).join('');
+    } catch (e) {
+      grid.innerHTML = `<p style="padding:40px;text-align:center;color:var(--ink-3);grid-column:1/-1">Could not load rooms. Is the server running?</p>`;
+    }
+  }
+
+  // parse URL params into fields
+  const urlP = new URLSearchParams(window.location.search);
+  if (urlP.get('loc'))  { document.getElementById('sidebarLoc').value = urlP.get('loc'); document.getElementById('filterLoc').value = urlP.get('loc'); }
+  if (urlP.get('type')) { document.getElementById('sidebarType').value = urlP.get('type'); document.getElementById('filterType').value = urlP.get('type'); }
+  if (urlP.get('budget')) {
+    const b = urlP.get('budget');
+    document.getElementById('sidebarPrice').value = b;
+    document.getElementById('priceRange').value   = b;
+    document.getElementById('sidebarPriceValue').textContent = fmtPrice(b);
+    document.getElementById('priceDisplay').textContent      = fmtPrice(b);
+  }
+
+  loadRooms();
+  document.getElementById('filterBtn')?.addEventListener('click', () => {
+    const loc = document.getElementById('filterLoc')?.value;
+    const type = document.getElementById('filterType')?.value;
+    if (loc)  document.getElementById('sidebarLoc').value = loc;
+    if (type) document.getElementById('sidebarType').value = type;
+    loadRooms();
+  });
+  document.getElementById('sidebarSearch')?.addEventListener('click', () => {
+    sidebar.classList.remove('open');
+    document.body.style.overflow = '';
+    loadRooms();
+  });
+  document.getElementById('sortSelect')?.addEventListener('change', loadRooms);
+  document.getElementById('filterLoc')?.addEventListener('keydown', e => { if (e.key === 'Enter') loadRooms(); });
+
+  // scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.room-card').forEach(c => observer.observe(c));
+
+  // scroll to top
+  const scrollBtn = document.getElementById('scrollTop');
+  if (scrollBtn) {
+    window.addEventListener('scroll', () => scrollBtn.classList.toggle('visible', window.scrollY > 400), { passive: true });
+    scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+})();
+</script>
 </body>
 </html>

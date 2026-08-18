@@ -5,32 +5,53 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Settings — MeroSpace Admin</title>
   <link rel="stylesheet" href="css/admin.css">
+  <style>
+    .settings-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+    .settings-grid .full { grid-column:span 2; }
+    .save-row { display:flex; align-items:center; gap:14px; margin-top:8px; }
+    .save-msg  { font-size:.82rem; font-weight:600; opacity:0; transition:.3s; }
+    .save-msg.show { opacity:1; color:var(--success); }
+    .save-msg.err  { opacity:1; color:var(--danger); }
+    .color-row { display:flex; align-items:center; gap:12px; }
+    .color-row input[type=color] { width:44px; height:36px; padding:2px 4px; border-radius:6px; border:1.5px solid var(--line); cursor:pointer; }
+    .color-row input[type=text]  { flex:1; }
+    .location-list { list-style:none; display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; }
+    .location-tag  { background:var(--bg); border:1.5px solid var(--line); border-radius:6px; padding:5px 12px; font-size:.82rem; display:flex; align-items:center; gap:6px; }
+    .location-tag button { background:none; border:none; color:var(--danger); cursor:pointer; font-size:.9rem; padding:0; line-height:1; }
+    .location-add  { display:flex; gap:8px; margin-top:10px; }
+    .location-add input { flex:1; }
+    .type-list { display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; }
+    .type-tag  { background:var(--bg); border:1.5px solid var(--line); border-radius:6px; padding:5px 12px; font-size:.82rem; display:flex; align-items:center; gap:6px; }
+    .type-tag button { background:none; border:none; color:var(--danger); cursor:pointer; font-size:.9rem; padding:0; }
+    .info-table td:first-child { font-weight:600; color:var(--ink-soft); font-size:.82rem; width:180px; padding:10px 0; }
+    .info-table td:last-child  { font-size:.88rem; }
+    .info-table tr { border-bottom:1px solid var(--line); }
+    .info-table tr:last-child { border-bottom:none; }
+    .section-sep { margin:24px 0 0; padding-top:20px; border-top:1px solid var(--line); font-size:.72rem; text-transform:uppercase; letter-spacing:.1em; color:var(--ink-soft); font-weight:700; }
+  </style>
 </head>
 <body>
 <div class="admin-layout">
   <aside class="sidebar">
-    <div class="sidebar-brand"><h2>MeroSpace</h2><span>Administration Panel</span></div>
+    <div class="sidebar-brand"><h2>MeroSpace</h2><span>Admin Panel</span></div>
     <div class="nav-section">
       <div class="nav-section-title">Main</div>
       <a href="/admin" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Dashboard</a>
-      <a href="/admin/pending" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Pending Approvals<span class="nav-badge" id="pendingCount">0</span></a>
+      <a href="/admin/pending" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Pending<span class="nav-badge" id="pendingCount">0</span></a>
     </div>
     <div class="nav-section">
-      <div class="nav-section-title">Room Management</div>
+      <div class="nav-section-title">Rooms</div>
       <a href="/admin/rooms" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>All Listings</a>
-      <a href="/admin/pending" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Approve / Reject</a>
+      <a href="/admin/pending" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/></svg>Approve / Reject</a>
       <a href="/admin/analytics" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Analytics</a>
     </div>
     <div class="nav-section">
-      <div class="nav-section-title">User Management</div>
+      <div class="nav-section-title">Users</div>
       <a href="/admin/users" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>All Users</a>
     </div>
     <div class="nav-section">
-      <div class="nav-section-title">Configuration</div>
-      <a href="/admin/settings" class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>Site Settings</a>
-    </div>
-    <div class="nav-section">
-      <div class="nav-section-title">Account</div>
+      <div class="nav-section-title">Config</div>
+      <a href="/admin/settings" class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>Settings</a>
       <a href="/" class="nav-item" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>View Website</a>
       <a href="#" class="nav-item logout-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Logout</a>
     </div>
@@ -40,98 +61,288 @@
   <main class="main-content">
     <div class="top-bar">
       <div>
-        <div class="breadcrumb"><a href="/admin">Admin</a><span>›</span>Settings</div>
+        <div class="breadcrumb"><a href="/admin">Admin</a> <span>›</span> Settings</div>
         <h1>Site Settings</h1>
       </div>
+      <div class="top-bar-right">
+        <span id="lastSaved" style="font-size:.78rem;color:var(--ink-soft)"></span>
+      </div>
     </div>
 
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px;">
+    <div id="settingsLoading" style="text-align:center;padding:60px"><div class="spinner-wrap"><div class="spinner"></div></div></div>
+    <div id="settingsContent" style="display:none">
 
-      <!-- General -->
-      <div class="data-card">
-        <div class="data-card-header"><h3>General Info</h3></div>
-        <div class="form-group"><label>Site Name</label><input type="text" value="MeroSpace"></div>
-        <div class="form-group"><label>Tagline</label><input type="text" value="Find Rooms in the Kathmandu Valley"></div>
-        <div class="form-group"><label>Contact Email</label><input type="email" value="hello@merospace.com"></div>
-        <div class="form-group"><label>Contact Phone</label><input type="text" value="+977 98XXXXXXXX"></div>
-        <button class="form-submit" onclick="saved()">Save Changes</button>
-      </div>
+      <div class="settings-grid">
 
-      <!-- Listing rules -->
-      <div class="data-card">
-        <div class="data-card-header"><h3>Listing Rules</h3></div>
-        <div class="form-group">
-          <label>Require Admin Approval?</label>
-          <select><option value="yes" selected>Yes — review before going live</option><option value="no">No — auto-approve</option></select>
+        <!-- GENERAL INFO -->
+        <div class="data-card">
+          <div class="data-card-header"><h3>General Info</h3></div>
+          <div class="form-group"><label>Site Name</label><input type="text" id="siteName"></div>
+          <div class="form-group"><label>Tagline</label><input type="text" id="tagline"></div>
+          <div class="form-group"><label>Contact Email</label><input type="email" id="contactEmail"></div>
+          <div class="form-group"><label>Contact Phone</label><input type="text" id="contactPhone"></div>
+          <div class="save-row">
+            <button class="form-submit" onclick="saveSection('general')">Save General Info</button>
+            <span class="save-msg" id="msg-general"></span>
+          </div>
         </div>
-        <div class="form-group"><label>Max Images per Listing</label><input type="number" value="5" min="1" max="10"></div>
-        <div class="form-group"><label>Max File Size (MB)</label><input type="number" value="5" min="1" max="20"></div>
-        <div class="form-group"><label>Allowed Room Types</label><textarea>Single Room, Apartment, Studio</textarea></div>
-        <button class="form-submit" onclick="saved()">Save Changes</button>
-      </div>
 
-      <!-- Locations -->
-      <div class="data-card">
-        <div class="data-card-header"><h3>Supported Locations</h3></div>
-        <div class="form-group"><label>Cities / Areas (one per line)</label>
-          <textarea rows="6">Kathmandu
-Lalitpur
-Bhaktapur
-Thamel
-Patan
-Jorpati
-Baneshwor
-Koteshwor</textarea>
+        <!-- LISTING RULES -->
+        <div class="data-card">
+          <div class="data-card-header"><h3>Listing Rules</h3></div>
+          <div class="form-group">
+            <label>Require Admin Approval?</label>
+            <select id="requireApproval">
+              <option value="true">Yes — review before going live</option>
+              <option value="false">No — auto-approve</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Max Images per Listing</label><input type="number" id="maxImages" min="1" max="20"></div>
+          <div class="form-group"><label>Max File Size (MB)</label><input type="number" id="maxFileSizeMB" min="1" max="50"></div>
+          <div class="form-group">
+            <label>Allowed Room Types</label>
+            <div class="type-list" id="typeList"></div>
+            <div class="location-add" style="margin-top:8px">
+              <input type="text" id="newType" placeholder="Add room type…">
+              <button class="form-submit" style="padding:9px 16px" onclick="addType()">Add</button>
+            </div>
+          </div>
+          <div class="save-row">
+            <button class="form-submit" onclick="saveSection('rules')">Save Rules</button>
+            <span class="save-msg" id="msg-rules"></span>
+          </div>
         </div>
-        <button class="form-submit" onclick="saved()">Save Changes</button>
+
+        <!-- SUPPORTED LOCATIONS -->
+        <div class="data-card">
+          <div class="data-card-header"><h3>Supported Locations</h3></div>
+          <p style="font-size:.82rem;color:var(--ink-soft);margin-bottom:12px">These locations appear in search filters on the website.</p>
+          <div class="location-list" id="locationList"></div>
+          <div class="location-add">
+            <input type="text" id="newLocation" placeholder="Add location (e.g. Balaju)…">
+            <button class="form-submit" style="padding:9px 16px" onclick="addLocation()">Add</button>
+          </div>
+          <div class="save-row" style="margin-top:14px">
+            <button class="form-submit" onclick="saveSection('locations')">Save Locations</button>
+            <span class="save-msg" id="msg-locations"></span>
+          </div>
+        </div>
+
+        <!-- APPEARANCE -->
+        <div class="data-card">
+          <div class="data-card-header"><h3>Appearance</h3></div>
+          <div class="form-group">
+            <label>Primary Color</label>
+            <div class="color-row">
+              <input type="color" id="primaryColorPicker">
+              <input type="text" id="primaryColor" placeholder="#0D9488">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Accent Color</label>
+            <div class="color-row">
+              <input type="color" id="accentColorPicker">
+              <input type="text" id="accentColor" placeholder="#F59E0B">
+            </div>
+          </div>
+          <div class="form-group"><label>Homepage Tagline</label><textarea id="homepageTagline" rows="2"></textarea></div>
+          <div class="save-row">
+            <button class="form-submit" onclick="saveSection('appearance')">Save Appearance</button>
+            <span class="save-msg" id="msg-appearance"></span>
+          </div>
+        </div>
+
+        <!-- SERVER INFO — full width, read-only -->
+        <div class="data-card full">
+          <div class="data-card-header"><h3>Server &amp; Database Info</h3><span style="font-size:.78rem;color:var(--ink-soft)">Read-only — saved in MongoDB</span></div>
+          <table class="info-table" style="width:100%;border-collapse:collapse">
+            <tr><td>Environment</td><td id="srvEnv">—</td></tr>
+            <tr><td>Server Port</td><td>5000</td></tr>
+            <tr><td>Database</td><td id="srvDB">mongodb://localhost:27017/merospace</td></tr>
+            <tr><td>Uptime</td><td id="srvUptime">—</td></tr>
+            <tr><td>Total Users</td><td id="srvUsers">—</td></tr>
+            <tr><td>Total Rooms</td><td id="srvRooms">—</td></tr>
+            <tr><td>Settings Last Updated</td><td id="srvSettingsUpdated">—</td></tr>
+          </table>
+        </div>
+
       </div>
-
-      <!-- Appearance -->
-      <div class="data-card">
-        <div class="data-card-header"><h3>Appearance</h3></div>
-        <div class="form-group"><label>Primary Color</label><input type="color" value="#7C2F21" style="height:42px;padding:4px 8px;"></div>
-        <div class="form-group"><label>Accent Color</label><input type="color" value="#4B6358" style="height:42px;padding:4px 8px;"></div>
-        <div class="form-group"><label>Homepage Tagline</label><textarea rows="2">Find Your Perfect Room in Kathmandu Valley</textarea></div>
-        <button class="form-submit" onclick="saved()">Save Changes</button>
-      </div>
-
-    </div>
-
-    <!-- Server info -->
-    <div class="data-card" style="margin-top:22px;">
-      <div class="data-card-header"><h3>Server Information</h3></div>
-      <table class="data-table">
-        <tbody>
-          <tr><td style="font-weight:700;width:200px">Environment</td><td id="srvEnv">—</td></tr>
-          <tr><td style="font-weight:700">Server Port</td><td>5000</td></tr>
-          <tr><td style="font-weight:700">Database</td><td>MongoDB — localhost:27017/merospace</td></tr>
-          <tr><td style="font-weight:700">Uptime</td><td id="srvUptime">—</td></tr>
-        </tbody>
-      </table>
     </div>
   </main>
 </div>
+
 <script src="js/admin.js"></script>
 <script>
   const u = JSON.parse(localStorage.getItem('adminUser')||'{}');
   if (u.name) { document.getElementById('sidebarName').textContent=u.name; document.getElementById('sidebarAvatar').textContent=u.name[0].toUpperCase(); }
 
-  function saved() {
-    const btn = event.target;
-    btn.textContent = '✅ Saved!'; btn.style.background = 'var(--success)';
-    setTimeout(() => { btn.textContent = 'Save Changes'; btn.style.background = ''; }, 2000);
+  let currentSettings = {};
+
+  // ── Sync colour picker ↔ text input ───────────────────────────
+  function bindColor(pickerId, textId) {
+    const picker = document.getElementById(pickerId);
+    const text   = document.getElementById(textId);
+    picker.addEventListener('input', () => { text.value = picker.value; });
+    text.addEventListener('input',   () => { if(/^#[0-9A-Fa-f]{6}$/.test(text.value)) picker.value = text.value; });
   }
 
-  async function loadHealth() {
-    const h = await api('/health');
-    if (h) {
-      document.getElementById('srvEnv').textContent = h.data?.env || 'development';
-      const up = Math.round((h.data?.uptime||0));
-      const hrs = Math.floor(up/3600); const mins = Math.floor((up%3600)/60);
-      document.getElementById('srvUptime').textContent = `${hrs}h ${mins}m`;
-    }
+  // ── Render locations list ──────────────────────────────────────
+  function renderLocations(locs) {
+    const el = document.getElementById('locationList');
+    el.innerHTML = locs.map(l => `
+      <li class="location-tag">${l}
+        <button onclick="removeLocation('${l}')" title="Remove">×</button>
+      </li>`).join('');
   }
-  document.addEventListener('DOMContentLoaded', loadHealth);
+  window.removeLocation = loc => {
+    currentSettings.supportedLocations = currentSettings.supportedLocations.filter(l => l !== loc);
+    renderLocations(currentSettings.supportedLocations);
+  };
+  window.addLocation = () => {
+    const inp = document.getElementById('newLocation');
+    const val = inp.value.trim();
+    if (!val || currentSettings.supportedLocations.includes(val)) return;
+    currentSettings.supportedLocations.push(val);
+    renderLocations(currentSettings.supportedLocations);
+    inp.value = '';
+  };
+
+  // ── Render room types ──────────────────────────────────────────
+  function renderTypes(types) {
+    const el = document.getElementById('typeList');
+    el.innerHTML = types.map(t => `
+      <span class="type-tag">${t}
+        <button onclick="removeType('${t}')" title="Remove">×</button>
+      </span>`).join('');
+  }
+  window.removeType = type => {
+    currentSettings.allowedRoomTypes = currentSettings.allowedRoomTypes.filter(t => t !== type);
+    renderTypes(currentSettings.allowedRoomTypes);
+  };
+  window.addType = () => {
+    const inp = document.getElementById('newType');
+    const val = inp.value.trim();
+    if (!val || currentSettings.allowedRoomTypes.includes(val)) return;
+    currentSettings.allowedRoomTypes.push(val);
+    renderTypes(currentSettings.allowedRoomTypes);
+    inp.value = '';
+  };
+
+  // ── Show feedback message ──────────────────────────────────────
+  function showMsg(id, text, isErr) {
+    const el = document.getElementById('msg-' + id);
+    el.textContent = text;
+    el.className = 'save-msg show' + (isErr ? ' err' : '');
+    setTimeout(() => { el.className = 'save-msg'; }, 3000);
+  }
+
+  // ── Save individual section ─────────────────────────────────────
+  window.saveSection = async (section) => {
+    let payload = {};
+    if (section === 'general') {
+      payload = {
+        siteName:     document.getElementById('siteName').value.trim(),
+        tagline:      document.getElementById('tagline').value.trim(),
+        contactEmail: document.getElementById('contactEmail').value.trim(),
+        contactPhone: document.getElementById('contactPhone').value.trim(),
+      };
+    } else if (section === 'rules') {
+      payload = {
+        requireApproval: document.getElementById('requireApproval').value === 'true',
+        maxImages:        Number(document.getElementById('maxImages').value),
+        maxFileSizeMB:    Number(document.getElementById('maxFileSizeMB').value),
+        allowedRoomTypes: currentSettings.allowedRoomTypes,
+      };
+    } else if (section === 'locations') {
+      payload = { supportedLocations: currentSettings.supportedLocations };
+    } else if (section === 'appearance') {
+      payload = {
+        primaryColor:    document.getElementById('primaryColor').value.trim(),
+        accentColor:     document.getElementById('accentColor').value.trim(),
+        homepageTagline: document.getElementById('homepageTagline').value.trim(),
+      };
+    }
+
+    const res = await api('/admin/settings', {
+      method: 'PUT',
+      body: JSON.stringify(payload)
+    });
+    if (!res) { showMsg(section, 'Error saving', true); return; }
+    const data = await res.json();
+    if (res.ok) {
+      currentSettings = { ...currentSettings, ...payload };
+      document.getElementById('lastSaved').textContent = 'Last saved: ' + new Date().toLocaleTimeString();
+      document.getElementById('srvSettingsUpdated').textContent = new Date().toLocaleString();
+      showMsg(section, 'Saved to MongoDB!', false);
+    } else {
+      showMsg(section, data.message || 'Error', true);
+    }
+  };
+
+  // ── Load all settings on page load ────────────────────────────
+  async function loadSettings() {
+    const [settings, stats, health] = await Promise.all([
+      api('/admin/settings').then(r => r?.json()),
+      api('/admin/stats').then(r => r?.json()),
+      fetch('http://localhost:5000/api/health').then(r => r.ok ? r.json() : null).catch(() => null)
+    ]);
+
+    document.getElementById('settingsLoading').style.display = 'none';
+    document.getElementById('settingsContent').style.display = 'block';
+
+    if (settings) {
+      currentSettings = settings;
+
+      // General
+      document.getElementById('siteName').value     = settings.siteName     || '';
+      document.getElementById('tagline').value      = settings.tagline      || '';
+      document.getElementById('contactEmail').value = settings.contactEmail || '';
+      document.getElementById('contactPhone').value = settings.contactPhone || '';
+
+      // Rules
+      document.getElementById('requireApproval').value = settings.requireApproval ? 'true' : 'false';
+      document.getElementById('maxImages').value        = settings.maxImages     || 5;
+      document.getElementById('maxFileSizeMB').value    = settings.maxFileSizeMB || 5;
+      renderTypes(settings.allowedRoomTypes || []);
+
+      // Locations
+      renderLocations(settings.supportedLocations || []);
+
+      // Appearance
+      const pc = settings.primaryColor || '#0D9488';
+      const ac = settings.accentColor  || '#F59E0B';
+      document.getElementById('primaryColor').value        = pc;
+      document.getElementById('primaryColorPicker').value  = pc;
+      document.getElementById('accentColor').value         = ac;
+      document.getElementById('accentColorPicker').value   = ac;
+      document.getElementById('homepageTagline').value     = settings.homepageTagline || '';
+
+      // Last updated
+      if (settings.updatedAt)
+        document.getElementById('srvSettingsUpdated').textContent = new Date(settings.updatedAt).toLocaleString();
+    }
+
+    // Server info
+    if (stats) {
+      document.getElementById('srvUsers').textContent = stats.totalUsers + ' users';
+      document.getElementById('srvRooms').textContent = stats.totalRooms + ' rooms';
+    }
+    if (health) {
+      document.getElementById('srvEnv').textContent = health.data?.env || 'development';
+      const up = Math.round(health.data?.uptime || 0);
+      document.getElementById('srvUptime').textContent = `${Math.floor(up/3600)}h ${Math.floor((up%3600)/60)}m`;
+    }
+
+    // Bind colour pickers
+    bindColor('primaryColorPicker','primaryColor');
+    bindColor('accentColorPicker','accentColor');
+
+    // Load pending count in sidebar
+    const rooms = await api('/admin/rooms').then(r => r?.json());
+    if (rooms) document.getElementById('pendingCount').textContent = rooms.filter(r=>r.status==='pending').length;
+  }
+
+  document.addEventListener('DOMContentLoaded', loadSettings);
 </script>
 </body>
 </html>
