@@ -40,8 +40,13 @@ exports.getRoomById = async (req, res) => {
 
 exports.updateRoom = async (req, res) => {
   try {
-    const room = await Room.findOne({ _id: req.params.id, owner: req.user.id });
-    if (!room) return res.status(404).json({ message: 'Room not found' });
+    // Admin can edit any room; regular user can only edit their own
+    const query = req.user.role === 'admin'
+      ? { _id: req.params.id }
+      : { _id: req.params.id, owner: req.user.id };
+
+    const room = await Room.findOne(query);
+    if (!room) return res.status(404).json({ message: 'Room not found or not authorised' });
     Object.assign(room, req.body);
     if (req.files?.length) room.images = req.files.map(f => `/uploads/${f.filename}`);
     await room.save();

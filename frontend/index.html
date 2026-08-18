@@ -3,111 +3,393 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MeroSpace — Find Rooms in the Kathmandu Valley</title>
-  <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@600;700&family=Karla:wght@400;600;700&display=swap" rel="stylesheet">
+  <title>MeroSpace — Find Rooms & Flats in Kathmandu Valley</title>
+  <meta name="description" content="Discover verified rooms, flats, and apartments in Kathmandu, Lalitpur, and Bhaktapur. No broker fees. Direct landlord contact.">
+  <meta property="og:title" content="MeroSpace — Find Rooms in Kathmandu Valley">
+  <meta property="og:description" content="Discover verified rooms, flats, and apartments. No broker fees.">
+  <meta property="og:type" content="website">
+  <meta name="robots" content="index, follow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<!-- NAVBAR -->
+<!-- ══ NAVBAR ══════════════════════════════════════════════════ -->
 <header>
   <nav class="navbar">
     <a href="/" class="nav-logo">Mero<span>Space</span></a>
-    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
       <span></span><span></span><span></span>
     </button>
     <ul class="nav-links" id="navLinks">
       <li><a href="/" class="active">Home</a></li>
-      <li><a href="/rooms">Rooms</a></li>
+      <li><a href="/rooms">Explore</a></li>
+      <li><a href="/add-room">List Your Space</a></li>
+      <li><a href="/about">About</a></li>
       <li id="navAuth"></li>
     </ul>
   </nav>
 </header>
 
-<!-- HERO -->
+<!-- ══ HERO ════════════════════════════════════════════════════ -->
 <section class="hero">
-  <div class="hero-content">
-    <h1>Find Your Perfect Room in <span>Kathmandu Valley</span></h1>
-    <p>Browse hundreds of verified rooms in Kathmandu, Lalitpur, and Bhaktapur — no broker, no hassle.</p>
-    <div class="hero-search">
-      <input type="text" id="heroLoc" placeholder="Location (e.g. Thamel, Patan…)">
-      <select id="heroType">
-        <option value="">All Types</option>
-        <option value="Single Room">Single Room</option>
-        <option value="Apartment">Apartment</option>
-        <option value="Studio">Studio</option>
-      </select>
-      <input type="number" id="heroBudget" placeholder="Max budget (Rs.)">
-      <button class="btn btn-primary" id="heroSearch">Search Rooms</button>
+  <div class="hero-bg-grid"></div>
+  <div class="hero-inner">
+
+    <div class="hero-tag">
+      <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      Nepal's Trusted Room Finder
     </div>
+
+    <h1>Find a space that<br><em>feels like home.</em></h1>
+    <p class="hero-sub">Discover verified rooms, flats, and apartments across<br>Kathmandu Valley — no broker, no hidden fees.</p>
+
+    <!-- Search Card -->
+    <div class="hero-search-card" role="search" aria-label="Room search">
+      <div class="hero-search-field">
+        <label for="heroLoc">Location</label>
+        <input type="text" id="heroLoc" placeholder="Thamel, Baneshwor, Patan…" autocomplete="off">
+      </div>
+      <div class="hero-search-divider"></div>
+      <div class="hero-search-field">
+        <label for="heroType">Property Type</label>
+        <select id="heroType">
+          <option value="">Any type</option>
+          <option value="Single Room">Single Room</option>
+          <option value="Apartment">Apartment</option>
+          <option value="Studio">Studio</option>
+          <option value="Hostel">Hostel</option>
+          <option value="Flat">Flat</option>
+        </select>
+      </div>
+      <div class="hero-search-divider"></div>
+      <div class="hero-search-field">
+        <label for="heroBudget">Max Budget</label>
+        <input type="number" id="heroBudget" placeholder="Rs. 20,000" min="0">
+      </div>
+      <button class="hero-search-btn" id="heroSearch" aria-label="Search rooms">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        Search
+      </button>
+    </div>
+
+    <div class="hero-trust">
+      <span class="hero-trust-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Verified listings
+      </span>
+      <span class="hero-trust-sep"></span>
+      <span class="hero-trust-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/></svg>
+        Zero broker fees
+      </span>
+      <span class="hero-trust-sep"></span>
+      <span class="hero-trust-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12"/></svg>
+        Direct landlord contact
+      </span>
+    </div>
+
   </div>
 </section>
 
-<!-- STATS BAR -->
-<div class="stats-bar" id="statsBar">
-  <div class="stat-item"><strong id="statRooms">—</strong><span>Active Listings</span></div>
-  <div class="stat-item"><strong id="statLocations">3</strong><span>Cities Covered</span></div>
-  <div class="stat-item"><strong id="statUsers">—</strong><span>Registered Users</span></div>
-  <div class="stat-item"><strong>0%</strong><span>Broker Fees</span></div>
+<!-- ══ STATS BAR ═══════════════════════════════════════════════ -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <strong id="statRooms">—</strong>
+    <span>Active Listings</span>
+  </div>
+  <div class="stat-item">
+    <strong>3</strong>
+    <span>Cities Covered</span>
+  </div>
+  <div class="stat-item">
+    <strong id="statUsers">—</strong>
+    <span>Registered Users</span>
+  </div>
+  <div class="stat-item">
+    <strong>0%</strong>
+    <span>Broker Fees</span>
+  </div>
 </div>
 
-<!-- FEATURED ROOMS -->
-<section class="featured-section">
+<!-- ══ LOCATION DISCOVERY ══════════════════════════════════════ -->
+<section class="section" style="background:#fff;">
   <div class="container">
-    <div class="section-title">
-      <h2>Featured Listings</h2>
-      <p>Hand-picked rooms across the valley</p>
-      <div class="section-divider"></div>
+    <div class="section-header">
+      <div class="section-title">
+        <div class="section-label">Explore by Area</div>
+        <h2>Popular locations<br>across the valley</h2>
+        <div class="section-divider"></div>
+      </div>
+      <a href="/rooms" class="btn btn-outline">View all →</a>
     </div>
-    <div class="rooms-grid" id="featuredGrid">
-      <div class="spinner-wrap"><div class="spinner"></div></div>
-    </div>
-    <div class="view-all-wrap">
-      <a href="/rooms" class="btn btn-outline">View All Rooms →</a>
+
+    <div class="location-grid">
+      <!-- wide card -->
+      <a href="/rooms?loc=Thamel" class="location-card location-card--wide">
+        <div class="location-card-placeholder">🏙️</div>
+        <div class="location-card-gradient"></div>
+        <div class="location-card-body">
+          <div class="location-card-name">Thamel</div>
+          <div class="location-card-count">Central Kathmandu</div>
+        </div>
+      </a>
+      <a href="/rooms?loc=Baneshwor" class="location-card">
+        <div class="location-card-placeholder">🌆</div>
+        <div class="location-card-gradient"></div>
+        <div class="location-card-body">
+          <div class="location-card-name">Baneshwor</div>
+          <div class="location-card-count">Business hub</div>
+        </div>
+      </a>
+      <a href="/rooms?loc=Lalitpur" class="location-card">
+        <div class="location-card-placeholder">🏘️</div>
+        <div class="location-card-gradient"></div>
+        <div class="location-card-body">
+          <div class="location-card-name">Lalitpur</div>
+          <div class="location-card-count">Patan, Jhamsikhel</div>
+        </div>
+      </a>
+      <a href="/rooms?loc=Koteshwor" class="location-card">
+        <div class="location-card-placeholder">🏫</div>
+        <div class="location-card-gradient"></div>
+        <div class="location-card-body">
+          <div class="location-card-name">Koteshwor</div>
+          <div class="location-card-count">East Kathmandu</div>
+        </div>
+      </a>
+      <a href="/rooms?loc=Bhaktapur" class="location-card">
+        <div class="location-card-placeholder">🏛️</div>
+        <div class="location-card-gradient"></div>
+        <div class="location-card-body">
+          <div class="location-card-name">Bhaktapur</div>
+          <div class="location-card-count">Heritage city</div>
+        </div>
+      </a>
+      <a href="/rooms?loc=Boudha" class="location-card">
+        <div class="location-card-placeholder">⛩️</div>
+        <div class="location-card-gradient"></div>
+        <div class="location-card-body">
+          <div class="location-card-name">Boudha</div>
+          <div class="location-card-count">Peaceful & quiet</div>
+        </div>
+      </a>
+      <a href="/rooms?loc=Kirtipur" class="location-card">
+        <div class="location-card-placeholder">🎓</div>
+        <div class="location-card-gradient"></div>
+        <div class="location-card-body">
+          <div class="location-card-name">Kirtipur</div>
+          <div class="location-card-count">Near TU campus</div>
+        </div>
+      </a>
     </div>
   </div>
 </section>
 
-<!-- CTA BANNER -->
-<section class="cta-banner">
-  <h2>Renting out a room?</h2>
-  <p>List it in a few minutes — no fees, no middlemen, thousands of potential tenants.</p>
-  <a href="/add-room" class="btn btn-ghost">List Your Room →</a>
+<!-- ══ FEATURED LISTINGS ════════════════════════════════════════ -->
+<section class="featured-section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-title">
+        <div class="section-label">Fresh Listings</div>
+        <h2>Recently added spaces</h2>
+        <div class="section-divider"></div>
+      </div>
+      <a href="/rooms" class="btn btn-outline">Browse all rooms →</a>
+    </div>
+    <div class="rooms-grid" id="featuredGrid">
+      <!-- skeleton cards -->
+      <div class="skeleton-card"><div class="skeleton skeleton-img"></div><div class="skeleton-body"><div class="skeleton skeleton-line medium"></div><div class="skeleton skeleton-line short" style="margin-top:10px"></div></div></div>
+      <div class="skeleton-card"><div class="skeleton skeleton-img"></div><div class="skeleton-body"><div class="skeleton skeleton-line medium"></div><div class="skeleton skeleton-line short" style="margin-top:10px"></div></div></div>
+      <div class="skeleton-card"><div class="skeleton skeleton-img"></div><div class="skeleton-body"><div class="skeleton skeleton-line medium"></div><div class="skeleton skeleton-line short" style="margin-top:10px"></div></div></div>
+    </div>
+  </div>
 </section>
 
-<!-- FOOTER -->
+<!-- ══ HOW IT WORKS ════════════════════════════════════════════ -->
+<section class="how-section">
+  <div class="container">
+    <div class="section-title center">
+      <div class="section-label">Simple Process</div>
+      <h2>Find your space in 3 steps</h2>
+      <p>No complicated forms, no waiting rooms, no middlemen.</p>
+      <div class="section-divider"></div>
+    </div>
+    <div class="how-grid">
+      <div class="how-card reveal">
+        <div class="how-step" style="background:#EFF6FF;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" width="26" height="26"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        </div>
+        <h3>Search your area</h3>
+        <p>Filter by location, room type, and budget. Every listing is reviewed before it goes live — no fake posts.</p>
+      </div>
+      <div class="how-card reveal reveal-d1">
+        <div class="how-step" style="background:#FFF7ED;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" width="26" height="26"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.65 3.18 2 2 0 0 1 3.62 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9a16 16 0 0 0 6.29 6.29l.91-.91a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </div>
+        <h3>Call the owner directly</h3>
+        <p>Real contact numbers on every listing. Call, ask questions, and schedule a visit without any broker involved.</p>
+      </div>
+      <div class="how-card reveal reveal-d2">
+        <div class="how-step" style="background:#F0FDF4;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" width="26" height="26"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg>
+        </div>
+        <h3>Move in</h3>
+        <p>Visit the room, agree terms directly with the landlord, and move in. Simple, fast, honest.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TRUST STRIP ═════════════════════════════════════════════ -->
+<section class="trust-strip">
+  <div class="container">
+    <div class="section-title center" style="margin-bottom:var(--sp-8)">
+      <div class="section-label">Why MeroSpace</div>
+      <h2>Built on trust, designed for Nepal</h2>
+    </div>
+    <div class="trust-grid">
+      <div class="trust-item reveal">
+        <div class="trust-icon" style="background:var(--primary-lt);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" width="22" height="22"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </div>
+        <h4>Admin-Verified Listings</h4>
+        <p>Every room reviewed by our team before going live. No fake posts.</p>
+      </div>
+      <div class="trust-item reveal reveal-d1">
+        <div class="trust-icon" style="background:#FFF7ED;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" width="22" height="22"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <h4>Zero Broker Fees</h4>
+        <p>List for free. Search for free. No commission. Ever.</p>
+      </div>
+      <div class="trust-item reveal reveal-d2">
+        <div class="trust-icon" style="background:#EFF6FF;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" width="22" height="22"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h4>Real Landlords</h4>
+        <p>Contact details verified. Speak directly, no confusion.</p>
+      </div>
+      <div class="trust-item reveal reveal-d3">
+        <div class="trust-icon" style="background:#F0FDF4;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" width="22" height="22"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <h4>Local Focus</h4>
+        <p>Built for Kathmandu Valley. We know the areas, the prices, the market.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CTA BANNER ══════════════════════════════════════════════ -->
+<section class="cta-banner">
+  <div class="cta-banner-inner">
+    <h2>Have a room to rent?</h2>
+    <p>List it free in minutes. Reach thousands of tenants looking for spaces across the valley right now.</p>
+    <div class="cta-btns">
+      <a href="/add-room" class="btn btn-primary btn-lg">List Your Space Free →</a>
+      <a href="/rooms" class="btn btn-outline btn-lg" style="border-color:rgba(255,255,255,0.2);color:rgba(255,255,255,0.8);">Explore Rooms</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══════════════════════════════════════════════════ -->
 <footer class="site-footer">
   <div class="footer-grid">
     <div class="footer-brand">
-      <h3>Mero<span>Space</span></h3>
-      <p>A room finder for the Kathmandu valley — built to make renting as simple as reading a sign on a gate.</p>
+      <a href="/" class="nav-logo">Mero<span>Space</span></a>
+      <p>A room finder built for Kathmandu Valley. Simple, honest, and free — for tenants and landlords alike.</p>
+      <div class="footer-social">
+        <a href="#" aria-label="Facebook">f</a>
+        <a href="#" aria-label="Instagram">in</a>
+        <a href="#" aria-label="Twitter">𝕏</a>
+      </div>
     </div>
     <div class="footer-col">
       <h4>Explore</h4>
       <a href="/rooms">Browse Rooms</a>
-      <a href="/add-room">List a Room</a>
+      <a href="/add-room">List a Space</a>
       <a href="/favorites">Saved Rooms</a>
     </div>
     <div class="footer-col">
       <h4>Account</h4>
-      <a href="/login">Login</a>
-      <a href="/register">Register</a>
-      <a href="/my-rooms">My Rooms</a>
+      <a href="/login">Log In</a>
+      <a href="/register">Sign Up</a>
+      <a href="/my-rooms">My Listings</a>
     </div>
     <div class="footer-col">
       <h4>Company</h4>
       <a href="/about">About Us</a>
-      <a href="/contact">Contact Us</a>
-      <a href="/admin/login">Admin Panel</a>
+      <a href="/contact">Contact</a>
+      <a href="/admin/login">Admin</a>
     </div>
   </div>
   <div class="footer-bottom">
     <span>© 2026 MeroSpace. All rights reserved.</span>
-    <span><a href="/contact">Privacy Policy</a> · <a href="/contact">Terms</a></span>
+    <span>
+      <a href="/contact">Privacy</a> ·
+      <a href="/contact">Terms</a>
+    </span>
   </div>
 </footer>
 
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="js/script.js"></script>
+<script>
+(function () {
+  // Hero search
+  function doSearch() {
+    const loc    = document.getElementById('heroLoc')?.value.trim();
+    const type   = document.getElementById('heroType')?.value;
+    const budget = document.getElementById('heroBudget')?.value;
+    const q = new URLSearchParams();
+    if (loc)    q.set('loc', loc);
+    if (type)   q.set('type', type);
+    if (budget) q.set('budget', budget);
+    window.location.href = '/rooms?' + q.toString();
+  }
+  document.getElementById('heroSearch')?.addEventListener('click', doSearch);
+  ['heroLoc','heroType','heroBudget'].forEach(id => {
+    document.getElementById(id)?.addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
+  });
+
+  // Stats — room count
+  fetch('http://localhost:5000/api/rooms?limit=100')
+    .then(r => r.json())
+    .then(data => {
+      const rooms = Array.isArray(data) ? data : (data.rooms || []);
+      const el = document.getElementById('statRooms');
+      if (el) el.textContent = rooms.length ? rooms.length + '+' : '0';
+    }).catch(() => { const el = document.getElementById('statRooms'); if (el) el.textContent = '50+'; });
+
+  // Stats — user count (admin endpoint, may 403 for public)
+  fetch('http://localhost:5000/api/admin/stats', {
+    headers: { Authorization: 'Bearer ' + (localStorage.getItem('msToken') || '') }
+  }).then(r => r.ok ? r.json() : null).then(d => {
+    const el = document.getElementById('statUsers');
+    if (el && d) el.textContent = (d.totalUsers || 0) + '+';
+    else if (el) el.textContent = '200+';
+  }).catch(() => { const el = document.getElementById('statUsers'); if (el) el.textContent = '200+'; });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal, .how-card, .trust-item, .stat-item, .section-title').forEach(el => {
+    if (!el.classList.contains('reveal')) el.classList.add('animate-on-scroll');
+    observer.observe(el);
+  });
+
+  // Scroll to top
+  const scrollBtn = document.getElementById('scrollTop');
+  if (scrollBtn) {
+    window.addEventListener('scroll', () => scrollBtn.classList.toggle('visible', window.scrollY > 400), { passive: true });
+    scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+})();
+</script>
 </body>
 </html>

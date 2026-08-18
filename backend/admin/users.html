@@ -50,20 +50,56 @@
         <h3>All Users</h3>
         <div class="data-card-filters">
           <select id="filterRole"><option value="">All Roles</option><option value="user">User</option><option value="admin">Admin</option></select>
-          <select id="filterActive"><option value="">All Status</option><option value="true">Active</option><option value="false">Banned</option></select>
+          <select id="filterActive"><option value="">All Status</option><option value="true">Active</option><option value="false">Disabled</option></select>
           <input type="text" id="filterSearch" placeholder="Search name or email…">
         </div>
       </div>
       <table class="data-table" id="usersTable">
         <thead>
-          <tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Listings</th><th>Joined</th><th>Actions</th></tr>
+          <tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Joined</th><th>Actions</th></tr>
         </thead>
         <tbody id="usersBody">
-          <tr><td colspan="7" style="text-align:center;padding:32px"><div class="spinner-wrap"><div class="spinner"></div></div></td></tr>
+          <tr><td colspan="6" style="text-align:center;padding:32px"><div class="spinner-wrap"><div class="spinner"></div></div></td></tr>
         </tbody>
       </table>
     </div>
+
+    <!-- Legend -->
+    <!-- <div class="data-card" style="margin-top:0">
+      <div style="font-size:.8rem;color:var(--ink-soft);display:flex;gap:24px;flex-wrap:wrap">
+        <span><strong>Edit</strong> — change the user's name or role</span>
+        <span><strong>Disable Account</strong> — user cannot log in (account still exists)</span>
+        <span><strong>Enable Account</strong> — re-activates a disabled account</span>
+        <span><strong>Make Admin</strong> — gives full admin panel access</span>
+        <span><strong>Delete</strong> — permanently removes the user and all their listings</span>
+      </div>
+    </div> -->
   </main>
+</div>
+
+<!-- Edit User Modal -->
+<div class="modal-overlay" id="editUserModal" style="position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:.2s;">
+  <div style="background:#fff;border-radius:14px;padding:28px;max-width:420px;width:95%;box-shadow:0 20px 60px rgba(0,0,0,.2);">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+      <h3 style="font-size:1.1rem;font-weight:700;">Edit User</h3>
+      <button onclick="closeUserEdit()" style="background:none;border:none;font-size:1.4rem;color:var(--ink-soft);cursor:pointer;">×</button>
+    </div>
+    <input type="hidden" id="editUserId">
+    <div class="form-group"><label>Full Name</label><input type="text" id="editUserName"></div>
+    <div class="form-group"><label>Email Address</label><input type="email" id="editUserEmail"></div>
+    <div class="form-group">
+      <label>Role</label>
+      <select id="editUserRole">
+        <option value="user">User</option>
+        <option value="admin">Admin</option>
+      </select>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:14px">
+      <button class="btn-sm btn-ghost" onclick="closeUserEdit()">Cancel</button>
+      <button class="btn-sm btn-primary" onclick="saveUserEdit()">Save Changes</button>
+    </div>
+    <p id="editUserMsg" style="text-align:center;font-size:.82rem;font-weight:600;margin-top:8px;min-height:16px"></p>
+  </div>
 </div>
 <script src="js/admin.js"></script>
 <script>
@@ -93,22 +129,57 @@
     tbody.innerHTML = users.map(u => `
       <tr>
         <td><strong>${u.name}</strong></td>
-        <td>${u.email}</td>
+        <td style="color:var(--ink-soft)">${u.email}</td>
         <td><span class="badge ${u.role==='admin'?'badge-warning':'badge-info'}">${u.role}</span></td>
-        <td><span class="badge ${u.isActive?'badge-success':'badge-danger'}">${u.isActive?'Active':'Banned'}</span></td>
-        <td>—</td>
-        <td>${new Date(u.createdAt).toLocaleDateString()}</td>
+        <td><span class="badge ${u.isActive?'badge-success':'badge-danger'}">${u.isActive?'Active':'Disabled'}</span></td>
+        <td style="color:var(--ink-soft)">${new Date(u.createdAt).toLocaleDateString()}</td>
         <td class="actions">
-          <button class="btn-sm ${u.isActive?'btn-danger':'btn-success'}" onclick="toggleUser('${u._id}',${!u.isActive})">${u.isActive?'Ban':'Activate'}</button>
+          <button class="btn-sm btn-primary" onclick="openUserEdit('${u._id}','${u.name}','${u.email}','${u.role}')">Edit</button>
+          ${u.isActive
+            ? `<button class="btn-sm btn-warning" onclick="toggleUser('${u._id}',false)">Disable Account</button>`
+            : `<button class="btn-sm btn-success" onclick="toggleUser('${u._id}',true)">Enable Account</button>`
+          }
           ${u.role!=='admin'?`<button class="btn-sm btn-ghost" onclick="makeAdmin('${u._id}')">Make Admin</button>`:''}
           <button class="btn-sm btn-danger" onclick="deleteUser('${u._id}')">Delete</button>
         </td>
       </tr>`).join('');
   }
 
-  window.toggleUser = async (id, isActive) => { if(!confirm('Are you sure?'))return; await api(`/admin/users/${id}`,{method:'PUT',body:JSON.stringify({isActive})}); loadUsers(); };
-  window.makeAdmin  = async id => { if(!confirm('Make this user an admin?'))return; await api(`/admin/users/${id}`,{method:'PUT',body:JSON.stringify({role:'admin'})}); loadUsers(); };
-  window.deleteUser = async id => { if(!confirm('Delete user and all their listings?'))return; await api(`/admin/users/${id}`,{method:'DELETE'}); loadUsers(); };
+  window.toggleUser = async (id, isActive) => {
+    if (!confirm(isActive ? 'Enable this account?' : 'Disable this account? The user will not be able to log in.')) return;
+    await api(`/admin/users/${id}`,{method:'PUT',body:JSON.stringify({isActive})}); loadUsers();
+  };
+  window.makeAdmin  = async id => { if(!confirm('Give this user full admin access?'))return; await api(`/admin/users/${id}`,{method:'PUT',body:JSON.stringify({role:'admin'})}); loadUsers(); };
+  window.deleteUser = async id => { if(!confirm('Permanently delete this user and all their listings? This cannot be undone.'))return; await api(`/admin/users/${id}`,{method:'DELETE'}); loadUsers(); };
+
+  // Edit user modal
+  window.openUserEdit = (id, name, email, role) => {
+    document.getElementById('editUserId').value    = id;
+    document.getElementById('editUserName').value  = name;
+    document.getElementById('editUserEmail').value = email;
+    document.getElementById('editUserRole').value  = role;
+    document.getElementById('editUserMsg').textContent = '';
+    document.getElementById('editUserModal').style.cssText += ';opacity:1;pointer-events:all;';
+  };
+  window.closeUserEdit = () => {
+    document.getElementById('editUserModal').style.opacity = '0';
+    document.getElementById('editUserModal').style.pointerEvents = 'none';
+  };
+  window.saveUserEdit = async () => {
+    const id    = document.getElementById('editUserId').value;
+    const name  = document.getElementById('editUserName').value.trim();
+    const email = document.getElementById('editUserEmail').value.trim();
+    const role  = document.getElementById('editUserRole').value;
+    const res   = await api(`/admin/users/${id}`, { method:'PUT', body:JSON.stringify({ name, email, role }) });
+    const msg   = document.getElementById('editUserMsg');
+    if (res?.ok) {
+      msg.style.color = 'var(--success)'; msg.textContent = 'Saved!';
+      setTimeout(() => { closeUserEdit(); loadUsers(); }, 700);
+    } else {
+      const d = await res?.json();
+      msg.style.color = 'var(--danger)'; msg.textContent = d?.message || 'Save failed.';
+    }
+  };
 
   document.getElementById('filterRole').addEventListener('change', renderUsers);
   document.getElementById('filterActive').addEventListener('change', renderUsers);

@@ -3,8 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Register — MeroSpace</title>
-  <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@600;700&family=Karla:wght@400;600;700&display=swap" rel="stylesheet">
+  <title>Sign Up — MeroSpace</title>
+  <meta name="description" content="Create a free MeroSpace account to save rooms and list your own space.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -12,9 +14,13 @@
 <header>
   <nav class="navbar">
     <a href="/" class="nav-logo">Mero<span>Space</span></a>
-    <ul class="nav-links">
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
       <li><a href="/">Home</a></li>
-      <li><a href="/rooms">Rooms</a></li>
+      <li><a href="/rooms">Explore</a></li>
+      <li><a href="/login" style="margin-left:6px" class="btn btn-outline btn-sm">Log in</a></li>
     </ul>
   </nav>
 </header>
@@ -22,34 +28,47 @@
 <div class="auth-page">
   <div class="auth-card">
     <div class="auth-logo">
-      <h2>Create account</h2>
-      <p>Join MeroSpace — free forever</p>
+      <a href="/" class="nav-logo" style="font-size:1.6rem;">Mero<span>Space</span></a>
+      <h2>Create your account</h2>
+      <p>Free forever — for tenants and landlords</p>
     </div>
-    <form id="registerForm">
+
+    <form id="registerForm" novalidate>
       <div class="form-group">
-        <label>Full Name</label>
-        <input type="text" id="fullname" placeholder="Your name" required>
+        <label for="fullname">Full Name</label>
+        <input type="text" id="fullname" placeholder="Your name" autocomplete="name" required>
       </div>
       <div class="form-group">
-        <label>Email Address</label>
-        <input type="email" id="email" placeholder="you@example.com" required>
+        <label for="email">Email Address</label>
+        <input type="email" id="email" placeholder="you@example.com" autocomplete="email" required>
       </div>
       <div class="form-group">
-        <label>Password</label>
-        <input type="password" id="password" placeholder="Min 6 characters" minlength="6" required>
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="At least 6 characters" autocomplete="new-password" minlength="6" required>
       </div>
       <div class="form-group">
-        <label>Confirm Password</label>
-        <input type="password" id="confirmPassword" placeholder="Repeat password" minlength="6" required>
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword" placeholder="Repeat password" autocomplete="new-password" minlength="6" required>
       </div>
-      <button type="submit" class="btn btn-primary btn-full">Create Account</button>
-      <p class="form-message" id="message"></p>
+      <button type="submit" class="btn btn-primary btn-full" style="margin-top:4px;">
+        Create Free Account
+      </button>
+      <p class="form-message" id="message" role="alert"></p>
     </form>
-    <p class="form-footer-link">Already have an account? <a href="/login">Sign in</a></p>
+
+    <p class="form-footer-link" style="margin-top:16px;">
+      By signing up you agree to our <a href="/contact">Terms & Privacy Policy</a>.
+    </p>
+    <p class="form-footer-link">Already have an account? <a href="/login">Log in →</a></p>
   </div>
 </div>
 
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="js/script.js"></script>
+<script>
+  document.getElementById('navToggle')?.addEventListener('click', () => {
+    document.getElementById('navLinks')?.classList.toggle('open');
+  });
+</script>
 </body>
 </html>

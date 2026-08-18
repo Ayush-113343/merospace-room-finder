@@ -5,32 +5,36 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Pending Approvals — MeroSpace Admin</title>
   <link rel="stylesheet" href="css/admin.css">
+  <style>
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:.2s;}
+    .modal-overlay.open{opacity:1;pointer-events:all;}
+    .modal{background:#fff;border-radius:14px;padding:28px;max-width:560px;width:95%;box-shadow:0 20px 60px rgba(0,0,0,.2);transform:scale(.95);transition:.2s;}
+    .modal-overlay.open .modal{transform:scale(1);}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  </style>
 </head>
 <body>
 <div class="admin-layout">
   <aside class="sidebar">
-    <div class="sidebar-brand"><h2>MeroSpace</h2><span>Administration Panel</span></div>
+    <div class="sidebar-brand"><h2>MeroSpace</h2><span>Admin Panel</span></div>
     <div class="nav-section">
       <div class="nav-section-title">Main</div>
       <a href="/admin" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Dashboard</a>
-      <a href="/admin/pending" class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Pending Approvals<span class="nav-badge" id="pendingCount">0</span></a>
+      <a href="/admin/pending" class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Pending<span class="nav-badge" id="pendingCount">0</span></a>
     </div>
     <div class="nav-section">
-      <div class="nav-section-title">Room Management</div>
+      <div class="nav-section-title">Rooms</div>
       <a href="/admin/rooms" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>All Listings</a>
       <a href="/admin/pending" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Approve / Reject</a>
       <a href="/admin/analytics" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Analytics</a>
     </div>
     <div class="nav-section">
-      <div class="nav-section-title">User Management</div>
+      <div class="nav-section-title">Users</div>
       <a href="/admin/users" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>All Users</a>
     </div>
     <div class="nav-section">
-      <div class="nav-section-title">Configuration</div>
-      <a href="/admin/settings" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>Site Settings</a>
-    </div>
-    <div class="nav-section">
-      <div class="nav-section-title">Account</div>
+      <div class="nav-section-title">Config</div>
+      <a href="/admin/settings" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>Settings</a>
       <a href="/" class="nav-item" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>View Website</a>
       <a href="#" class="nav-item logout-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Logout</a>
     </div>
@@ -39,85 +43,209 @@
 
   <main class="main-content">
     <div class="top-bar">
-      <div>
-        <div class="breadcrumb"><a href="/admin">Admin</a><span>›</span>Pending Approvals</div>
-        <h1>Pending Approvals</h1>
-      </div>
+      <div><div class="breadcrumb">Admin <span>›</span> Pending Approvals</div><h1>Pending Approvals</h1></div>
     </div>
-
-    <div class="alert alert-warning">⚠️ Rooms listed here are waiting for your review. They are <strong>not visible</strong> to the public until approved.</div>
-
+    <div class="alert alert-warning">Rooms listed here are not visible to the public until approved.</div>
     <div class="data-card">
       <div class="data-card-header">
         <h3 id="pendingTitle">Pending Rooms</h3>
-        <div class="data-card-filters">
-          <input type="text" id="searchFilter" placeholder="Search…">
-        </div>
+        <div class="data-card-filters"><input type="text" id="searchFilter" placeholder="Search title or location…"></div>
       </div>
       <table class="data-table">
-        <thead>
-          <tr><th>Photo</th><th>Title</th><th>Location</th><th>Type</th><th>Price</th><th>Owner</th><th>Contact</th><th>Submitted</th><th>Actions</th></tr>
-        </thead>
-        <tbody id="pendingBody">
-          <tr><td colspan="9" style="text-align:center;padding:32px"><div class="spinner-wrap"><div class="spinner"></div></div></td></tr>
-        </tbody>
+        <thead><tr><th>Photo</th><th>Title</th><th>Location</th><th>Type</th><th>Price</th><th>Owner</th><th>Contact</th><th>Submitted</th><th>Actions</th></tr></thead>
+        <tbody id="pendingBody"><tr><td colspan="9" style="text-align:center;padding:32px"><div class="spinner-wrap"><div class="spinner"></div></div></td></tr></tbody>
       </table>
     </div>
   </main>
+</div>
+
+<!-- Edit Room Modal -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal" style="max-width:560px;width:95%">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+      <h3>Edit Room Details</h3>
+      <button onclick="closeEdit()" style="background:none;border:none;font-size:1.4rem;color:var(--ink-soft);cursor:pointer;">×</button>
+    </div>
+    <input type="hidden" id="editId">
+    <div class="form-row">
+      <div class="form-group"><label>Title</label><input type="text" id="editTitle"></div>
+      <div class="form-group"><label>Location</label><input type="text" id="editLocation"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Room Type</label>
+        <select id="editType">
+          <option>Single Room</option>
+          <option>Apartment</option>
+          <option>Studio</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Price (Rs.)</label><input type="number" id="editPrice"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Bedrooms</label><input type="number" id="editBedrooms" min="1"></div>
+      <div class="form-group"><label>Contact Number</label><input type="text" id="editContact"></div>
+    </div>
+    <div class="form-group"><label>Description</label><textarea id="editDesc" rows="3"></textarea></div>
+    <div class="form-group">
+      <label>Current Photos</label>
+      <div id="editCurrentPhotos" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px"></div>
+      <label style="margin-top:8px">Upload New Photos (replaces existing)</label>
+      <div id="editUploadArea" style="border:2px dashed #e2e8f0;border-radius:10px;padding:20px;text-align:center;cursor:pointer;background:#f8fafc;transition:.2s"
+           onmouseenter="this.style.borderColor='var(--primary)'" onmouseleave="this.style.borderColor='#e2e8f0'"
+           onclick="document.getElementById('editImages').click()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32" style="margin:0 auto 6px;opacity:.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <p style="font-size:.8rem;color:#64748b">Click to upload photos (max 5, jpg/png)</p>
+        <input type="file" id="editImages" accept="image/*" multiple style="display:none" onchange="previewEditImages(this)">
+      </div>
+      <div id="editImagePreview" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px"></div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:4px">
+      <button class="btn-sm btn-ghost" onclick="closeEdit()">Cancel</button>
+      <button class="btn-sm btn-primary" onclick="saveEdit()">Save Changes</button>
+      <button class="btn-sm btn-success" onclick="saveAndApprove()">Save & Approve</button>
+    </div>
+    <p id="editMsg" style="text-align:center;font-size:.82rem;font-weight:600;margin-top:10px;min-height:18px"></p>
+  </div>
 </div>
 <script src="js/admin.js"></script>
 <script>
   const u = JSON.parse(localStorage.getItem('adminUser')||'{}');
   if (u.name) { document.getElementById('sidebarName').textContent=u.name; document.getElementById('sidebarAvatar').textContent=u.name[0].toUpperCase(); }
-
-  let pendingRooms = [];
-
+  let pendingRooms=[];
   async function loadPending() {
-    const rooms = await api('/admin/rooms') || [];
-    pendingRooms = rooms.filter(r => r.status === 'pending');
-    document.getElementById('pendingCount').textContent = pendingRooms.length;
-    document.getElementById('pendingTitle').textContent = `Pending Rooms (${pendingRooms.length})`;
+    const rooms=await api('/admin/rooms')||[];
+    pendingRooms=rooms.filter(r=>r.status==='pending');
+    document.getElementById('pendingCount').textContent=pendingRooms.length;
+    document.getElementById('pendingTitle').textContent=`Pending Rooms (${pendingRooms.length})`;
     render();
   }
-
   function render() {
-    const search = document.getElementById('searchFilter').value.toLowerCase();
-    const tbody  = document.getElementById('pendingBody');
-    let rooms = pendingRooms;
-    if (search) rooms = rooms.filter(r => r.title.toLowerCase().includes(search) || r.location.toLowerCase().includes(search));
-    if (!rooms.length) {
-      tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:48px;color:var(--ink-soft)">
-        ${pendingRooms.length ? 'No results match your search.' : '✅ No pending rooms — all caught up!'}
+    const search=document.getElementById('searchFilter').value.toLowerCase();
+    const tbody=document.getElementById('pendingBody');
+    let rooms=pendingRooms;
+    if(search) rooms=rooms.filter(r=>r.title.toLowerCase().includes(search)||r.location.toLowerCase().includes(search));
+    if(!rooms.length){tbody.innerHTML=`<tr><td colspan="9" style="text-align:center;padding:48px;color:var(--ink-soft)">${pendingRooms.length?'No results match your search.':'No rooms pending approval.'}</td></tr>`;return;}
+    tbody.innerHTML=rooms.map(r=>{
+      const img=r.images?.length?`<img src="http://localhost:5000${r.images[0]}" class="room-thumb" alt="">`:`<div style="width:44px;height:36px;border-radius:6px;background:#f1f5f9;display:inline-flex;align-items:center;justify-content:center;font-size:.65rem;color:var(--ink-soft)">No img</div>`;
+      return`<tr><td>${img}</td><td><strong>${r.title}</strong><br><small style="color:var(--ink-soft)">${(r.description||'').slice(0,40)}…</small></td><td>${r.location}</td><td>${r.roomType}</td><td>Rs. ${r.price.toLocaleString()}</td><td>${r.owner?.name||'—'}</td><td>${r.contact||'—'}</td><td>${new Date(r.createdAt).toLocaleDateString()}</td>
+      <td class="actions">
+        <button class="btn-sm btn-success" onclick="approve('${r._id}')">Approve</button>
+        <button class="btn-sm btn-danger"  onclick="reject('${r._id}')">Reject</button>
+        <button class="btn-sm btn-primary" onclick="openEdit(${JSON.stringify(r).replace(/"/g,'&quot;')})">Edit</button>
+        <a href="/room-details?id=${r._id}" target="_blank" class="btn-sm btn-ghost">Preview</a>
       </td></tr>`;
-      return;
-    }
-    tbody.innerHTML = rooms.map(r => {
-      const img = r.images?.length
-        ? `<img src="http://localhost:5000${r.images[0]}" class="room-thumb" alt="">`
-        : `<div class="room-thumb" style="background:var(--bg);display:inline-flex;align-items:center;justify-content:center;font-size:.7rem;color:var(--ink-soft)">No img</div>`;
-      return `<tr>
-        <td>${img}</td>
-        <td><strong>${r.title}</strong><br><small style="color:var(--ink-soft)">${(r.description||'').slice(0,60)}…</small></td>
-        <td>${r.location}</td>
-        <td>${r.roomType}</td>
-        <td>Rs. ${r.price.toLocaleString()}/mo</td>
-        <td>${r.owner?.name||'—'}<br><small style="color:var(--ink-soft)">${r.owner?.email||''}</small></td>
-        <td>${r.contact||'—'}</td>
-        <td>${new Date(r.createdAt).toLocaleDateString()}</td>
-        <td class="actions">
-          <button class="btn-sm btn-success" onclick="approve('${r._id}')">✓ Approve</button>
-          <button class="btn-sm btn-danger"  onclick="reject('${r._id}')">✗ Reject</button>
-          <a href="/room-details?id=${r._id}" target="_blank" class="btn-sm btn-ghost">Preview</a>
-        </td>
-      </tr>`;
     }).join('');
   }
+  window.approve=async id=>{await api(`/admin/rooms/${id}/status`,{method:'PUT',body:JSON.stringify({status:'approved'})});loadPending();};
+  window.reject =async id=>{await api(`/admin/rooms/${id}/status`,{method:'PUT',body:JSON.stringify({status:'rejected'})});loadPending();};
 
-  window.approve = async id => { await api(`/admin/rooms/${id}/status`,{method:'PUT',body:JSON.stringify({status:'approved'})}); loadPending(); };
-  window.reject  = async id => { await api(`/admin/rooms/${id}/status`,{method:'PUT',body:JSON.stringify({status:'rejected'})}); loadPending(); };
+  // Edit modal
+  window.openEdit = r => {
+    document.getElementById('editId').value       = r._id;
+    document.getElementById('editTitle').value    = r.title;
+    document.getElementById('editLocation').value = r.location;
+    document.getElementById('editType').value     = r.roomType;
+    document.getElementById('editPrice').value    = r.price;
+    document.getElementById('editBedrooms').value = r.bedrooms || 1;
+    document.getElementById('editContact').value  = r.contact || '';
+    document.getElementById('editDesc').value     = r.description || '';
+    document.getElementById('editMsg').textContent = '';
+    document.getElementById('editImagePreview').innerHTML = '';
+    document.getElementById('editImages').value = '';
 
-  document.getElementById('searchFilter').addEventListener('input', render);
-  document.addEventListener('DOMContentLoaded', loadPending);
+    // Show existing photos
+    const existing = document.getElementById('editCurrentPhotos');
+    if (r.images && r.images.length) {
+      existing.innerHTML = r.images.map(img => `
+        <div style="position:relative;display:inline-block">
+          <img src="http://localhost:5000${img}" style="width:72px;height:60px;object-fit:cover;border-radius:6px;border:1.5px solid #e2e8f0">
+          <span style="position:absolute;top:-4px;right:-4px;background:#ef4444;color:#fff;border-radius:50%;width:16px;height:16px;font-size:.6rem;display:flex;align-items:center;justify-content:center;font-weight:700;cursor:pointer" title="Existing photo">✓</span>
+        </div>`).join('');
+      existing.parentElement.querySelector('label').textContent = `Current Photos (${r.images.length}) — upload new ones below to replace`;
+    } else {
+      existing.innerHTML = '<span style="font-size:.78rem;color:#94a3b8">No photos uploaded yet</span>';
+      existing.parentElement.querySelector('label').textContent = 'Current Photos';
+    }
+
+    document.getElementById('editModal').classList.add('open');
+  };
+  window.closeEdit = () => document.getElementById('editModal').classList.remove('open');
+
+  window.previewEditImages = (input) => {
+    const preview = document.getElementById('editImagePreview');
+    preview.innerHTML = '';
+    [...input.files].slice(0,5).forEach(f => {
+      const img = document.createElement('img');
+      img.src = URL.createObjectURL(f);
+      img.style.cssText = 'width:72px;height:60px;object-fit:cover;border-radius:6px;border:1.5px solid #e2e8f0';
+      preview.appendChild(img);
+    });
+  };
+
+  async function doEdit(id, extraStatus) {
+    const imageInput = document.getElementById('editImages');
+    const hasImages  = imageInput.files && imageInput.files.length > 0;
+
+    let res;
+    if (hasImages) {
+      // Use FormData to send images + fields together
+      const fd = new FormData();
+      fd.append('title',       document.getElementById('editTitle').value);
+      fd.append('location',    document.getElementById('editLocation').value);
+      fd.append('roomType',    document.getElementById('editType').value);
+      fd.append('price',       document.getElementById('editPrice').value);
+      fd.append('bedrooms',    document.getElementById('editBedrooms').value);
+      fd.append('contact',     document.getElementById('editContact').value);
+      fd.append('description', document.getElementById('editDesc').value);
+      if (extraStatus) fd.append('status', extraStatus);
+      [...imageInput.files].slice(0,5).forEach(f => fd.append('images', f));
+
+      // Use the rooms update route which supports multer
+      const token = localStorage.getItem('adminToken');
+      res = await fetch(`http://localhost:5000/api/rooms/${id}`, {
+        method: 'PUT',
+        headers: { 'Authorization': `Bearer ${token}` },
+        body: fd
+      });
+    } else {
+      // No images — use admin edit route (JSON)
+      const body = {
+        title:       document.getElementById('editTitle').value,
+        location:    document.getElementById('editLocation').value,
+        roomType:    document.getElementById('editType').value,
+        price:       Number(document.getElementById('editPrice').value),
+        bedrooms:    Number(document.getElementById('editBedrooms').value),
+        contact:     document.getElementById('editContact').value,
+        description: document.getElementById('editDesc').value,
+      };
+      if (extraStatus) body.status = extraStatus;
+      res = await api(`/admin/rooms/${id}/edit`, { method: 'PUT', body: JSON.stringify(body) });
+    }
+    if (!res) return false;
+    // If status needs to be set separately (image upload path)
+    if (hasImages && extraStatus) {
+      await api(`/admin/rooms/${id}/status`, { method:'PUT', body: JSON.stringify({ status: extraStatus }) });
+    }
+    return res.ok;
+  }
+
+  window.saveEdit = async () => {
+    const id = document.getElementById('editId').value;
+    const ok = await doEdit(id);
+    const msg = document.getElementById('editMsg');
+    if (ok) { msg.style.color='var(--success)'; msg.textContent='Saved!'; setTimeout(()=>{ closeEdit(); loadPending(); },800); }
+    else    { msg.style.color='var(--danger)';  msg.textContent='Save failed.'; }
+  };
+
+  window.saveAndApprove = async () => {
+    const id = document.getElementById('editId').value;
+    const ok = await doEdit(id, 'approved');
+    if (ok) { closeEdit(); loadPending(); }
+    else    { document.getElementById('editMsg').textContent='Failed.'; }
+  };
+  document.getElementById('searchFilter').addEventListener('input',render);
+  document.addEventListener('DOMContentLoaded',loadPending);
 </script>
 </body>
 </html>

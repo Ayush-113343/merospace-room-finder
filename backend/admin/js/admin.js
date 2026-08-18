@@ -72,10 +72,11 @@ async function loadStats() {
   if (!document.getElementById('statsGrid')) return;
   const stats = await api('/admin/stats');
   if (!stats) return;
-  document.getElementById('statUsers').textContent = stats.totalUsers ?? '—';
-  document.getElementById('statRooms').textContent = stats.totalRooms ?? '—';
-  document.getElementById('statPending').textContent = stats.pendingRooms ?? '—';
-  document.getElementById('statViews').textContent = stats.totalViews?.toLocaleString() ?? '—';
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val ?? '—'; };
+  set('statUsers',   stats.totalUsers);
+  set('statRooms',   stats.totalRooms);
+  set('statPending', stats.pendingRooms);
+  set('statViews',   (stats.totalViews || 0).toLocaleString());
 }
 
 // Users

@@ -1,21 +1,22 @@
 const User = require('../models/User');
 const Room = require('../models/Room');
 const Favorite = require('../models/Favorite');
+const SiteSettings = require('../models/SiteSettings');
 
 exports.getDashboardStats = async (req, res) => {
   try {
-    const totalUsers = await User.countDocuments();
-    const totalRooms = await Room.countDocuments();
-    const pendingRooms = await Room.countDocuments({ status: 'pending' });
+    const totalUsers  = await User.countDocuments();
+    const totalRooms  = await Room.countDocuments();
+    const pendingRooms= await Room.countDocuments({ status: 'pending' });
     const totalFavorites = await Favorite.countDocuments();
-    const totalViews = await Room.aggregate([{ $group: { _id: null, total: { $sum: '$views' } } }]);
+    const viewsAgg    = await Room.aggregate([{ $group: { _id: null, total: { $sum: '$views' } } }]);
 
     res.json({
       totalUsers,
       totalRooms,
       pendingRooms,
       totalFavorites,
-      totalViews: totalViews[0]?.total || 0,
+      totalViews:  viewsAgg[0]?.total || 0,
       activeUsers: await User.countDocuments({ isActive: true })
     });
   } catch (err) {
@@ -34,10 +35,18 @@ exports.getAllUsers = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
   try {
-    const { isActive, role } = req.body;
-    const user = await User.findByIdAndUpdate(req.params.id, { isActive, role }, { new: true }).select('-password');
+    const { isActive, role, name, email } = req.body;
+    const update = {};
+    if (isActive !== undefined) update.isActive = isActive;
+    if (role     !== undefined) update.role     = role;
+    if (name     !== undefined) update.name     = name;
+    if (email    !== undefined) update.email    = email;
+    const user = await User.findByIdAndUpdate(req.params.id, update, { new: true }).select('-password');
+    if (!user) return res.status(404).json({ message: 'User not found' });
     res.json(user);
   } catch (err) {
+    // Duplicate email error
+    if (err.code === 11000) return res.status(400).json({ message: 'Email already in use by another account' });
     res.status(500).json({ message: err.message });
   }
 };
@@ -105,6 +114,57 @@ exports.getAnalytics = async (req, res) => {
       { $limit: 5 }
     ]);
     res.json({ newUsers, newRooms, roomsByType, topLocations });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// ── Site Settings ─────────────────────────────────────────────
+exports.getSettings = async (req, res) => {
+  try {
+    // findOneAndUpdate with upsert = create if doesn't exist
+    const settings = await SiteSettings.findOneAndUpdate(
+      { key: 'global' },
+      { $setOnInsert: { key: 'global' } },
+      { upsert: true, new: true }
+    );
+    res.json(settings);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+exports.updateSettings = async (req, res) => {
+  try {
+    const allowed = [
+      'siteName','tagline','contactEmail','contactPhone',
+      'requireApproval','maxImages','maxFileSizeMB','allowedRoomTypes',
+      'supportedLocations','primaryColor','accentColor','homepageTagline'
+    ];
+    const update = {};
+    allowed.forEach(field => {
+      if (req.body[field] !== undefined) update[field] = req.body[field];
+    });
+    const settings = await SiteSettings.findOneAndUpdate(
+      { key: 'global' },
+      { $set: update },
+      { upsert: true, new: true }
+    );
+    res.json({ message: 'Settings saved', settings });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// ── Admin edit any room ───────────────────────────────────────
+exports.editAnyRoom = async (req, res) => {
+  try {
+    const allowed = ['title','location','roomType','price','bedrooms','bathrooms','contact','description','status'];
+    const update = {};
+    allowed.forEach(f => { if (req.body[f] !== undefined) update[f] = req.body[f]; });
+    const room = await Room.findByIdAndUpdate(req.params.id, update, { new: true });
+    if (!room) return res.status(404).json({ message: 'Room not found' });
+    res.json(room);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

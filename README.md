@@ -56,7 +56,7 @@ MeroSpace provides a centralized platform to simplify room searching and room ad
 - HTML
 - CSS
 - JavaScript
-- Bootstrap
+
 
 ### Backend
 - Node.js
@@ -89,8 +89,8 @@ merospace-room-finder/
 
 | Name | Role |
 |------|------|
-| Dipak Mahto |  Project Manager |
-| Ayush Adhikar | Frontend Developer |
+| Ayush Adhikari |  Project Manager |
+| Dipak Mahto | Frontend Developer |
 | Sanjay Thakuri | Backend Developer |
 | Aaryan Kushwaha | Database & Testing |
 

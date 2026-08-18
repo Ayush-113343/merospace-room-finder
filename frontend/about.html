@@ -3,215 +3,177 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About Us — MeroSpace</title>
-  <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@600;700&family=Karla:wght@400;600;700&display=swap" rel="stylesheet">
+  <title>About — MeroSpace</title>
+  <meta name="description" content="MeroSpace is a verified room and flat finder for Kathmandu Valley. No broker fees, real landlords, honest listings.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <style>
-    /* ── About page specific styles ── */
+    /* about page specific */
     .about-hero {
-      background: linear-gradient(135deg, var(--ink) 0%, #2e3e3a 100%);
-      color: #fff;
-      padding: 80px 5% 70px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
+      background: #0C1A2E; color: #fff;
+      padding: 80px 5% 72px; text-align: center;
+      position: relative; overflow: hidden;
     }
     .about-hero::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 70% 50% at 50% 100%, rgba(13,148,136,0.18) 0%, transparent 70%);
     }
-    .about-hero-content { position: relative; max-width: 680px; margin: 0 auto; }
-    .about-hero h1 { font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 16px; }
-    .about-hero h1 span { color: var(--primary); }
-    .about-hero p  { font-size: 1.1rem; color: rgba(255,255,255,.75); max-width: 520px; margin: 0 auto; }
+    .about-hero-inner { position: relative; max-width: 640px; margin: 0 auto; }
+    .about-hero h1 { font-size: clamp(2rem, 4.5vw, 3.2rem); margin-bottom: var(--sp-4); }
+    .about-hero h1 em { font-style: normal; color: #5EEAD4; }
+    .about-hero p { color: rgba(255,255,255,0.6); font-size: 1.05rem; line-height: 1.8; }
 
-    /* ── Mission section ── */
-    .about-section { padding: 70px 5%; }
-    .about-section.alt { background: var(--white); }
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      align-items: center;
-      max-width: 1100px;
-      margin: 0 auto;
+    /* stats band */
+    .about-stats {
+      display: flex; background: var(--primary); color: #fff;
+      justify-content: center;
     }
-    .about-grid.reverse { direction: rtl; }
-    .about-grid.reverse > * { direction: ltr; }
-    .about-text h2 { font-size: clamp(1.6rem, 3vw, 2.1rem); margin-bottom: 16px; color: var(--ink); }
-    .about-text p  { color: var(--ink-soft); line-height: 1.85; margin-bottom: 14px; font-size: .97rem; }
-    .about-text .highlight { color: var(--primary); font-weight: 700; }
+    .about-stat {
+      flex: 1; min-width: 160px; text-align: center;
+      padding: 32px 20px;
+      border-right: 1px solid rgba(255,255,255,0.12);
+    }
+    .about-stat:last-child { border-right: none; }
+    .about-stat strong { display: block; font-size: 2.2rem; font-weight: 800; line-height: 1; margin-bottom: 5px; }
+    .about-stat span { font-size: 0.82rem; opacity: 0.8; }
+
+    /* split sections */
+    .about-split {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 60px; align-items: center;
+      max-width: 1100px; margin: 0 auto;
+      padding: 72px 5%;
+    }
+    .about-split.flip { direction: rtl; }
+    .about-split.flip > * { direction: ltr; }
+    .about-split-text h2 { font-size: clamp(1.6rem,3vw,2.2rem); margin-bottom: var(--sp-4); }
+    .about-split-text p { color: var(--ink-3); line-height: 1.8; margin-bottom: var(--sp-4); font-size: 0.95rem; }
+    .about-split-text p strong { color: var(--ink); font-weight: 700; }
     .about-visual {
-      border-radius: 16px;
-      overflow: hidden;
-      background: linear-gradient(135deg, var(--ink) 0%, var(--accent) 100%);
+      border-radius: var(--r-xl); overflow: hidden;
       aspect-ratio: 4/3;
       display: flex; align-items: center; justify-content: center;
-      padding: 40px;
+      position: relative;
     }
-    .about-visual-inner { text-align: center; color: rgba(255,255,255,.85); }
-    .about-visual-inner svg { width: 72px; height: 72px; margin-bottom: 16px; opacity: .8; }
-    .about-visual-inner h3 { font-family: var(--font-head); font-size: 1.4rem; color: #fff; }
-    .about-visual-inner p  { font-size: .88rem; opacity: .7; margin-top: 6px; }
+    .about-visual-inner { text-align: center; color: rgba(255,255,255,0.9); padding: var(--sp-8); }
+    .about-visual-inner svg { width: 64px; height: 64px; margin-bottom: var(--sp-4); opacity: 0.8; }
+    .about-visual-inner h3 { font-size: 1.35rem; color: #fff; margin-bottom: 6px; }
+    .about-visual-inner p  { font-size: 0.85rem; opacity: 0.7; }
 
-    /* ── Values grid ── */
-    .values-section { padding: 70px 5%; background: var(--sand-dk); }
+    /* values */
     .values-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 24px;
-      max-width: 1100px;
-      margin: 40px auto 0;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: var(--sp-6); max-width: 1100px; margin: var(--sp-10) auto 0;
     }
     .value-card {
-      background: var(--white);
-      border-radius: 14px;
-      padding: 28px 24px;
-      box-shadow: var(--shadow);
-      transition: var(--transition);
+      background: #fff; border-radius: var(--r-xl);
+      padding: var(--sp-8) var(--sp-6);
+      border: 1px solid var(--bg-3);
+      box-shadow: var(--sh-xs);
+      transition: transform var(--t-base), box-shadow var(--t-base);
     }
-    .value-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+    .value-card:hover { transform: translateY(-4px); box-shadow: var(--sh-lg); }
     .value-icon {
-      width: 48px; height: 48px; border-radius: 12px;
+      width: 48px; height: 48px; border-radius: var(--r-lg);
       display: flex; align-items: center; justify-content: center;
-      margin-bottom: 16px;
+      margin-bottom: var(--sp-4);
     }
-    .value-card h3 { font-size: 1.05rem; margin-bottom: 8px; }
-    .value-card p  { color: var(--ink-soft); font-size: .88rem; line-height: 1.7; }
+    .value-card h3 { font-size: 1rem; margin-bottom: var(--sp-2); }
+    .value-card p  { color: var(--ink-3); font-size: 0.875rem; line-height: 1.7; }
 
-    /* ── Stats banner ── */
-    .about-stats {
-      background: var(--primary);
-      color: #fff;
-      display: flex; justify-content: center; flex-wrap: wrap;
-    }
-    .about-stat-item {
-      flex: 1; min-width: 180px; text-align: center;
-      padding: 32px 20px;
-      border-right: 1px solid rgba(255,255,255,.15);
-    }
-    .about-stat-item:last-child { border-right: none; }
-    .about-stat-item strong { display: block; font-family: var(--font-head); font-size: 2.4rem; }
-    .about-stat-item span   { font-size: .88rem; opacity: .8; }
-
-    /* ── Team section ── */
-    .team-section { padding: 70px 5%; }
+    /* team */
     .team-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 28px;
-      max-width: 900px;
-      margin: 40px auto 0;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--sp-6); max-width: 900px; margin: var(--sp-10) auto 0;
     }
     .team-card {
-      background: var(--white);
-      border-radius: 14px;
-      padding: 28px 20px;
-      text-align: center;
-      box-shadow: var(--shadow);
-      transition: var(--transition);
+      background: #fff; border-radius: var(--r-xl); padding: var(--sp-8) var(--sp-5);
+      text-align: center; border: 1px solid var(--bg-3); box-shadow: var(--sh-xs);
+      transition: transform var(--t-base), box-shadow var(--t-base);
     }
-    .team-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .team-card:hover { transform: translateY(-4px); box-shadow: var(--sh-lg); }
     .team-avatar {
       width: 72px; height: 72px; border-radius: 50%;
-      margin: 0 auto 14px;
+      margin: 0 auto var(--sp-4);
       display: flex; align-items: center; justify-content: center;
-      font-family: var(--font-head); font-size: 1.6rem;
-      color: #fff; font-weight: 700;
+      font-size: 1.6rem; font-weight: 800; color: #fff;
     }
     .team-card h3 { font-size: 1rem; margin-bottom: 4px; }
-    .team-card p  { color: var(--ink-soft); font-size: .82rem; }
+    .team-card p  { color: var(--ink-3); font-size: 0.82rem; }
 
-    /* ── CTA ── */
-    .about-cta {
-      background: var(--ink);
-      color: #fff; text-align: center;
-      padding: 70px 5%;
-    }
-    .about-cta h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); margin-bottom: 14px; }
-    .about-cta p  { color: rgba(255,255,255,.7); margin-bottom: 28px; max-width: 480px; margin-left: auto; margin-right: auto; }
-    .about-cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-
-    @media (max-width: 800px) {
-      .about-grid { grid-template-columns: 1fr; gap: 36px; }
-      .about-grid.reverse { direction: ltr; }
+    @media (max-width: 768px) {
+      .about-split { grid-template-columns: 1fr; gap: 36px; padding: 48px 5%; }
+      .about-split.flip { direction: ltr; }
+      .about-stats { flex-direction: column; }
+      .about-stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.12); }
+      .about-stat:last-child { border-bottom: none; }
     }
   </style>
 </head>
 <body>
 
-<!-- NAVBAR -->
 <header>
   <nav class="navbar">
     <a href="/" class="nav-logo">Mero<span>Space</span></a>
-    <button class="nav-toggle" id="navToggle"><span></span><span></span><span></span></button>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
     <ul class="nav-links" id="navLinks">
       <li><a href="/">Home</a></li>
-      <li><a href="/rooms">Rooms</a></li>
+      <li><a href="/rooms">Explore</a></li>
       <li><a href="/about" class="active">About</a></li>
       <li id="navAuth"></li>
     </ul>
   </nav>
 </header>
 
-<!-- HERO -->
+<!-- hero -->
 <section class="about-hero">
-  <div class="about-hero-content">
-    <h1>About <span>MeroSpace</span></h1>
-    <p>We're on a mission to make finding a room in Kathmandu Valley as easy as searching online — no broker, no hidden fees, no runaround.</p>
+  <div class="about-hero-inner">
+    <div class="section-label" style="justify-content:center;margin-bottom:var(--sp-4)">Our Story</div>
+    <h1>Built for Nepal,<br>by <em>people who get it.</em></h1>
+    <p>We've all been through the Kathmandu room hunt — the broker fees, the ghost listings, the endless phone calls. MeroSpace exists to fix that.</p>
   </div>
 </section>
 
-<!-- STATS -->
+<!-- stats band -->
 <div class="about-stats">
-  <div class="about-stat-item"><strong>500+</strong><span>Rooms Listed</span></div>
-  <div class="about-stat-item"><strong>3</strong><span>Cities Covered</span></div>
-  <div class="about-stat-item"><strong>1,200+</strong><span>Happy Tenants</span></div>
-  <div class="about-stat-item"><strong>0%</strong><span>Broker Fee</span></div>
+  <div class="about-stat"><strong>500+</strong><span>Rooms Listed</span></div>
+  <div class="about-stat"><strong>3</strong><span>Cities Covered</span></div>
+  <div class="about-stat"><strong>1,200+</strong><span>Tenants Helped</span></div>
+  <div class="about-stat"><strong>0%</strong><span>Broker Fees</span></div>
 </div>
 
-<!-- WHO WE ARE -->
-<section class="about-section">
-  <div class="about-grid">
-    <div class="about-text">
-      <h2>Who We Are</h2>
-      <p>
-        MeroSpace is a <span class="highlight">Kathmandu-born room rental platform</span> built by people who understand the frustration of finding a decent room in the valley. We've all been there — calling brokers who never call back, visiting rooms that look nothing like the description, and paying fees just to see a listing.
-      </p>
-      <p>
-        We built MeroSpace to cut all of that out. Our platform connects room owners directly with tenants — no middlemen, no listing fees, no surprises. Just real rooms, real prices, and real contact information.
-      </p>
-      <p>
-        Whether you're a student moving to Kathmandu for college, a working professional looking for a flat near your office, or a family searching for a comfortable home in Lalitpur or Bhaktapur — MeroSpace is built for you.
-      </p>
-    </div>
-    <div class="about-visual">
-      <div class="about-visual-inner">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg>
-        <h3>Your Home in the Valley</h3>
-        <p>Kathmandu · Lalitpur · Bhaktapur</p>
-      </div>
+<!-- who we are -->
+<div class="about-split">
+  <div class="about-split-text reveal">
+    <div class="section-label">Who We Are</div>
+    <h2>A room finder that actually works</h2>
+    <p>MeroSpace is a <strong>Kathmandu-born rental platform</strong> built by people who understand the valley's rental market. We've experienced the frustration firsthand — calling brokers who don't call back, visiting rooms that look nothing like their photos.</p>
+    <p>Our platform connects room owners directly with tenants. No middlemen. No listing fees. No surprises. Just real rooms, real prices, real contact numbers.</p>
+    <a href="/rooms" class="btn btn-primary">Explore Listings →</a>
+  </div>
+  <div class="about-visual reveal reveal-d1" style="background:linear-gradient(135deg,#0C1A2E,var(--primary-dk))">
+    <div class="about-visual-inner">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg>
+      <h3>Your home in the valley</h3>
+      <p>Kathmandu · Lalitpur · Bhaktapur</p>
     </div>
   </div>
-</section>
+</div>
 
-<!-- MISSION -->
-<section class="about-section alt">
-  <div class="about-grid reverse">
-    <div class="about-text">
-      <h2>Our Mission</h2>
-      <p>
-        The rental market in Nepal has long been dominated by word-of-mouth and unregulated brokers. Tenants overpay. Landlords struggle to find reliable tenants. And both sides waste enormous time in the process.
-      </p>
-      <p>
-        Our mission is simple: <span class="highlight">make renting transparent, fast, and fair</span>. We verify listings, enforce quality standards, and give both landlords and tenants the tools they need to make informed decisions.
-      </p>
-      <p>
-        Every room on MeroSpace goes through an admin review before it goes live. We check for accuracy, fair pricing, and real contact information — so you can search with confidence.
-      </p>
+<!-- mission -->
+<div style="background:#fff;">
+  <div class="about-split flip">
+    <div class="about-split-text reveal">
+      <div class="section-label">Our Mission</div>
+      <h2>Make renting transparent, fast, and fair</h2>
+      <p>Nepal's rental market has long been dominated by word-of-mouth and unregulated brokers. Tenants overpay. Landlords struggle to find reliable tenants. Both sides waste enormous time.</p>
+      <p><strong>Our mission is simple</strong> — give both landlords and tenants the tools they need to make informed decisions, without paying a commission to anyone in the middle.</p>
+      <p>Every room on MeroSpace is admin-reviewed before it goes live. We check for accuracy, fair pricing, and real contact information so you can search with confidence.</p>
     </div>
-    <div class="about-visual" style="background:linear-gradient(135deg,var(--primary-dk) 0%,var(--primary) 100%)">
+    <div class="about-visual reveal reveal-d1" style="background:linear-gradient(135deg,var(--primary-dk),#0D9488);">
       <div class="about-visual-inner">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
         <h3>Transparent. Fast. Fair.</h3>
@@ -219,98 +181,70 @@
       </div>
     </div>
   </div>
-</section>
+</div>
 
-<!-- VALUES -->
-<section class="values-section">
-  <div style="max-width:1100px;margin:0 auto;">
-    <div class="section-title">
-      <h2>What We Stand For</h2>
-      <p>The principles behind every decision we make</p>
+<!-- values -->
+<section class="section" style="background:var(--bg);">
+  <div class="container">
+    <div class="section-title center">
+      <div class="section-label">Our Values</div>
+      <h2>What we stand for</h2>
       <div class="section-divider"></div>
     </div>
     <div class="values-grid">
-      <div class="value-card">
-        <div class="value-icon" style="background:rgba(124,47,33,.12)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#7C2F21" stroke-width="2" width="22" height="22"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+      <div class="value-card reveal">
+        <div class="value-icon" style="background:var(--primary-lt);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" width="22" height="22"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
         </div>
         <h3>Local First</h3>
-        <p>We are built for Nepal, by Nepalis. We understand local needs, local prices, and local culture — and that shapes every feature we build.</p>
+        <p>Built for Nepal, by Nepalis. We understand local needs, local prices, and local culture — and that shapes every feature we build.</p>
       </div>
-      <div class="value-card">
-        <div class="value-icon" style="background:rgba(75,99,88,.12)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#4B6358" stroke-width="2" width="22" height="22"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      <div class="value-card reveal reveal-d1">
+        <div class="value-icon" style="background:#F0FDF4;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" width="22" height="22"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
         </div>
         <h3>Verified Listings</h3>
-        <p>Every room is reviewed by our admin team before going live. No fake listings, no outdated posts, no misleading photos.</p>
+        <p>Every room is reviewed by our admin team before going live. No fake listings, no outdated posts.</p>
       </div>
-      <div class="value-card">
-        <div class="value-icon" style="background:rgba(196,124,26,.12)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#c47c1a" stroke-width="2" width="22" height="22"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <div class="value-card reveal reveal-d2">
+        <div class="value-icon" style="background:var(--accent-lt);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-dk)" stroke-width="2" width="22" height="22"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
         </div>
         <h3>Zero Broker Fees</h3>
-        <p>Listing a room is completely free. Finding a room is completely free. We never charge a commission or require a middleman.</p>
+        <p>Listing is free. Finding a room is free. We never charge a commission or require a middleman.</p>
       </div>
-      <div class="value-card">
-        <div class="value-icon" style="background:rgba(46,125,94,.12)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#2e7d5e" stroke-width="2" width="22" height="22"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <div class="value-card reveal reveal-d3">
+        <div class="value-icon" style="background:#EFF6FF;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" width="22" height="22"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         </div>
         <h3>Community Driven</h3>
-        <p>MeroSpace grows through word of mouth and trust. We listen to our users and continuously improve based on real feedback from tenants and landlords.</p>
+        <p>MeroSpace grows through trust and word of mouth. We listen to our users and improve based on real feedback.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- HOW IT WORKS -->
-<section class="about-section">
-  <div style="max-width:900px;margin:0 auto;text-align:center;">
-    <div class="section-title">
-      <h2>How It Works</h2>
-      <p>Three simple steps to find your next room</p>
-      <div class="section-divider"></div>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:32px;margin-top:44px;">
-      <div style="text-align:center;">
-        <div style="width:56px;height:56px;border-radius:50%;background:var(--primary);color:#fff;font-family:var(--font-head);font-size:1.4rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">1</div>
-        <h3 style="margin-bottom:8px;">Search</h3>
-        <p style="color:var(--ink-soft);font-size:.9rem;line-height:1.7">Enter your preferred location, room type, and budget. Browse verified listings instantly.</p>
-      </div>
-      <div style="text-align:center;">
-        <div style="width:56px;height:56px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--font-head);font-size:1.4rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">2</div>
-        <h3 style="margin-bottom:8px;">Connect</h3>
-        <p style="color:var(--ink-soft);font-size:.9rem;line-height:1.7">View full details, photos, and facilities. Call the landlord directly — no broker in between.</p>
-      </div>
-      <div style="text-align:center;">
-        <div style="width:56px;height:56px;border-radius:50%;background:var(--ink);color:#fff;font-family:var(--font-head);font-size:1.4rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">3</div>
-        <h3 style="margin-bottom:8px;">Move In</h3>
-        <p style="color:var(--ink-soft);font-size:.9rem;line-height:1.7">Visit the room, agree on terms with the landlord, and move in. Simple as that.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- TEAM -->
-<section class="team-section" style="background:var(--sand-dk);">
-  <div style="max-width:900px;margin:0 auto;">
-    <div class="section-title">
-      <h2>The Team</h2>
-      <p>A small team with a big mission</p>
+<!-- team -->
+<section class="section" style="background:#fff;">
+  <div class="container">
+    <div class="section-title center">
+      <div class="section-label">The People</div>
+      <h2>A small team, big mission</h2>
       <div class="section-divider"></div>
     </div>
     <div class="team-grid">
-      <div class="team-card">
+      <div class="team-card reveal">
         <div class="team-avatar" style="background:var(--primary);">A</div>
         <h3>Ayush</h3>
         <p>Founder & Developer</p>
       </div>
-      <div class="team-card">
-        <div class="team-avatar" style="background:var(--accent);">S</div>
+      <div class="team-card reveal reveal-d1">
+        <div class="team-avatar" style="background:var(--ink);">S</div>
         <h3>Support Team</h3>
         <p>Listing Review & Quality</p>
       </div>
-      <div class="team-card">
-        <div class="team-avatar" style="background:var(--ink);">C</div>
+      <div class="team-card reveal reveal-d2">
+        <div class="team-avatar" style="background:var(--accent);">C</div>
         <h3>Community</h3>
         <p>Our Users & Landlords</p>
       </div>
@@ -319,48 +253,46 @@
 </section>
 
 <!-- CTA -->
-<section class="about-cta">
-  <h2>Ready to find your space?</h2>
-  <p>Join thousands of people across Kathmandu Valley who found their home on MeroSpace.</p>
-  <div class="about-cta-btns">
-    <a href="/rooms" class="btn btn-primary">Browse Rooms</a>
-    <a href="/register" class="btn btn-outline" style="border-color:rgba(255,255,255,.4);color:#fff;">Create Free Account</a>
+<section class="cta-banner">
+  <div class="cta-banner-inner">
+    <h2>Ready to find your space?</h2>
+    <p>Join thousands of people across Kathmandu Valley who found their home on MeroSpace.</p>
+    <div class="cta-btns">
+      <a href="/rooms" class="btn btn-primary btn-lg">Browse Rooms →</a>
+      <a href="/register" class="btn btn-outline btn-lg" style="border-color:rgba(255,255,255,0.2);color:rgba(255,255,255,0.75);">Create Free Account</a>
+    </div>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer class="site-footer">
   <div class="footer-grid">
     <div class="footer-brand">
-      <h3>Mero<span>Space</span></h3>
-      <p>A room finder for the Kathmandu valley — built to make renting as simple as reading a sign on a gate.</p>
+      <a href="/" class="nav-logo">Mero<span>Space</span></a>
+      <p>A room finder built for Kathmandu Valley. Simple, honest, and free.</p>
     </div>
-    <div class="footer-col">
-      <h4>Explore</h4>
-      <a href="/rooms">Browse Rooms</a>
-      <a href="/add-room">List a Room</a>
-      <a href="/favorites">Saved Rooms</a>
-    </div>
-    <div class="footer-col">
-      <h4>Account</h4>
-      <a href="/login">Login</a>
-      <a href="/register">Register</a>
-      <a href="/my-rooms">My Rooms</a>
-    </div>
-    <div class="footer-col">
-      <h4>Company</h4>
-      <a href="/about">About Us</a>
-      <a href="/contact">Contact Us</a>
-      <a href="/admin/login">Admin Panel</a>
-    </div>
+    <div class="footer-col"><h4>Explore</h4><a href="/rooms">Browse Rooms</a><a href="/add-room">List a Space</a><a href="/favorites">Saved</a></div>
+    <div class="footer-col"><h4>Account</h4><a href="/login">Log In</a><a href="/register">Sign Up</a><a href="/my-rooms">My Listings</a></div>
+    <div class="footer-col"><h4>Company</h4><a href="/about">About Us</a><a href="/contact">Contact</a><a href="/admin/login">Admin</a></div>
   </div>
   <div class="footer-bottom">
     <span>© 2026 MeroSpace. All rights reserved.</span>
-    <span><a href="/contact">Privacy Policy</a> · <a href="/contact">Terms</a></span>
+    <span><a href="/contact">Privacy</a> · <a href="/contact">Terms</a></span>
   </div>
 </footer>
 
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="js/script.js"></script>
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  const scrollBtn = document.getElementById('scrollTop');
+  if (scrollBtn) {
+    window.addEventListener('scroll', () => scrollBtn.classList.toggle('visible', window.scrollY > 400), { passive: true });
+    scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+</script>
 </body>
 </html>
